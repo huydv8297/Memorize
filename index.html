@@ -13,6 +13,7 @@
 <body>
 
 <script type="text/javascript">
+
 class PlayScreen extends Phaser.Scene{
     constructor(){
         super('PlayScreen');
@@ -62,16 +63,18 @@ var game = new Phaser.Game(config);
 
 class MainMenu extends Phaser.Scene{
     constructor(){
-        super('MainMenu');
+        super('MainMenuScene');
     }
 	
     preload(){
-        this.load.image('background', 'sprites/Gameplay/NewBG.png');
-		this.load.image('logo', 'sprites/Start/Logo.png');
-		//this.load.image('logo2', 'sprites/Gameplay/NewBG.png');
-		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
-		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
-		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
+        this.load.image('background', 'assets/sprites/Gameplay/NewBG.png');
+		this.load.image('logo', 'assets/sprites/Start/Logo.png');
+		this.load.image('playbutton', 'assets/sprites/Start/playbutton.png');
+		this.load.image('share', 'assets/sprites/Start/share.png');
+		this.load.image('sound_on', 'assets/sprites/Start/sound_on.png');
+		this.load.image('sound_off', 'assets/sprites/Start/sound_off.png');
+		this.load.image('more_game', 'assets/sprites/Start/more_game.png');
+		this.load.image('leader_broad', 'assets/sprites/Start/leader_broad.png');
 		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
 		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
     }
@@ -79,7 +82,13 @@ class MainMenu extends Phaser.Scene{
 	create ()
 	{
 		this.add.image(235, 400,'background').setScale(0.45);
-		this.add.image(235, 400,'logo').setScale(0.45);
+		var logo = this.add.image(235, 300,'logo').setScale(0.45);
+		logo.scaleY = 0.7;
+		this.add.image(235, 495,'playbutton').setScale(0.35);
+		this.add.image(85, 650,'share').setScale(0.45);
+		this.add.image(85 * 2, 650,'more_game').setScale(0.45);
+		this.add.image(85 * 3, 650,'leader_broad').setScale(0.45);
+		this.add.image(85 * 4, 650,'sound_on').setScale(0.45);
 		platforms = this.physics.add.staticGroup();
 	}
 
@@ -89,8 +98,27 @@ class MainMenu extends Phaser.Scene{
 	}
 }
 
+var player;
+var platforms;
+var cursors;
+var score = 0;
+var scoreText;
 
+var config = {
+    type: Phaser.AUTO,
+    width: 470,
+    height: 800,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 300 },
+            debug: false
+        }
+    },
+    scene: [MainMenu]
+};
 
+var game = new Phaser.Game(config);
 
 
 </script>
