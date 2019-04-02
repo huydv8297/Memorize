@@ -1,0 +1,75 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Numerize</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+var MainMenu = new MainMenu('MainMenu');
+var config = {
+    type: Phaser.AUTO,
+    width: 470,
+    height: 800,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 300 },
+            debug: false
+        }
+    },
+    scene: MainMenu
+};
+
+var player;
+var platforms;
+var cursors;
+var score = 0;
+var scoreText;
+
+var game = new Phaser.Game(config);
+
+class MainMenu extends Phaser.Scene{
+    constructor(){
+        super('MainMenu');
+    }
+	
+    preload(){
+        this.load.image('background', 'sprites/Gameplay/NewBG.png');
+		this.load.image('logo', 'sprites/Start/Logo.png');
+		//this.load.image('logo2', 'sprites/Gameplay/NewBG.png');
+		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
+		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
+		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
+		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
+		//this.load.image('background', 'sprites/Gameplay/NewBG.png');
+    }
+	
+	create ()
+	{
+		this.add.image(235, 400,'background').setScale(0.45);
+		this.add.image(235, 400,'logo').setScale(0.45);
+		platforms = this.physics.add.staticGroup();
+	}
+
+	update ()
+	{
+		
+	}
+}
+
+
+
+
+
+</script>
+
+</body>
+</html>
