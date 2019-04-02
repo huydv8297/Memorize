@@ -38,28 +38,6 @@ class PlayScreen extends Phaser.Scene{
         
     }
 }
-var MainMenu = new MainMenu('MainMenu');
-var config = {
-    type: Phaser.AUTO,
-    width: 470,
-    height: 800,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 300 },
-            debug: false
-        }
-    },
-    scene: MainMenu
-};
-
-var player;
-var platforms;
-var cursors;
-var score = 0;
-var scoreText;
-
-var game = new Phaser.Game(config);
 
 class MainMenu extends Phaser.Scene{
     constructor(){
