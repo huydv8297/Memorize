@@ -1,8 +1,8 @@
 # tanks
 
 ```
-git clone https://github.com/phamhathanh/tanks.git
-cd tanks
+git clone https://github.com/huydv8297/Memorize.git
+cd Memorize
 npm install
 npm start
 ```
