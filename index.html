@@ -5,121 +5,27 @@
     <title>Numerize</title>
     <script src="node_modules/phaser/dist/phaser.js"></script>
 	<script type="text/javascript" src="node_modules/phaser3-nineslice/dist/nineslice.js"></script>
+	<script src="js/PlayScreen.js"></script>
+	<script src="js/MainMenu.js"></script>
+	<script src="js/Score.js"></script>
     <style type="text/css">
         body {
             margin: 0;
         }
+
+        @font-face {
+            font-family: SourceSansPro-Regular;
+            src: url('assets/fonts/SourceSansPro-Regular.ttf');
+            font-weight:400;
+            font-weight:normal;
+        }
     </style>
+    <div style="SourceSansPro-Regular; position:absolute; left:-1000px; visibility:hidden;">.</div>
 </head>
 <body>
 
+	
 <script type="text/javascript">
-
-class PlayScreen extends Phaser.Scene{
-
-    constructor(){
-        super({ key: 'PlayScreen', active: false});
-    }
-    
-    preload(){
-        this.load.image('background', 'assets/sprites/Gameplay/NewBG.png');
-        this.load.image('base-bg-btn', 'assets/sprites/Gameplay/New Update/Header-Btn-Base.png');
-    }
-    
-    create ()
-    {
-        this.add.image(235, 400,'background').setScale(0.45);
-
-        let header = this.physics.add.staticGroup();
-
-        header.create(100, 100, 'base-bg-btn');
-    }
-
-    update ()
-    {
-        
-    }
-}
-
-class MainMenu extends Phaser.Scene{
-    constructor(){
-        super({key: 'MainMenu', active: true});
-    }
-	
-    preload(){
-        this.load.image('background2', 'assets/sprites/Gameplay/NewBG.png');
-		this.load.image('logo', 'assets/sprites/Start/Logo.png');
-		this.load.image('base-bg-btn2', 'assets/sprites/Start/Play-Btn-Base.png');
-		this.load.image('playbutton', 'assets/sprites/Start/playbutton.png');
-		this.load.image('share', 'assets/sprites/Start/share.png');
-		this.load.image('sound_on', 'assets/sprites/Start/sound_on.png');
-		this.load.image('sound_off', 'assets/sprites/Start/sound_off.png');
-		this.load.image('more_game', 'assets/sprites/Start/more_game.png');
-		this.load.image('leader_broad', 'assets/sprites/Start/leader_broad.png');
-		
-		this.load.audio('button_click', 'assets/sounds/ButtonClick.wav');
-
-    }
-	
-	create ()
-	{
-		this.add.image(235, 384,'background2').setScale(0.4);
-		var logo = this.add.image(216, 300,'logo').setScale(0.4);
-		logo.scaleY = 0.7;
-		this.add.image(216, 500,'base-bg-btn2').setScale(0.3);
-		var playButton = this.add.image(216, 495,'playbutton').setScale(0.3);
-		
-		playButton.setInteractive();
-		
-		playButton.on('pointerdown', ()=> {
-			this.sound.play('button_click');
-			this.scene.switch('PlayScreen');
-		});
-		
-
-		
-		this.add.image(85, 650,'share').setScale(0.4);
-		this.add.image(85 * 2, 650,'more_game').setScale(0.4);
-		this.add.image(85 * 3, 650,'leader_broad').setScale(0.4);
-		this.add.image(85 * 4, 650,'sound_on').setScale(0.4);
-
-	}
-
-	update ()
-	{
-		
-	}
-}
-
-class Score extends Phaser.Scene{
-    constructor(){
-        super({key: 'Score', active: true});
-    }
-	
-
-	preload(){
-	
-		this.load.nineSlice('popup', 'assets/sprites/WatchVideo/Base.png', 260, 50, 180, 380);
-
-		this.load.image('icon', 'assets/sprites/Level_complete/icon.png');
-		this.load.image('main_menu', 'assets/sprites/Level_complete/main_menu.png');
-		this.load.image('medal', 'assets/sprites/Level_complete/medal.png');
-		this.load.image('next_level', 'assets/sprites/Level_complete/next_level.png');
-		this.load.image('replay', 'assets/sprites/Level_complete/Replay.png');
-		this.load.image('shadow', 'assets/sprites/Level_complete/Shadow.png');
-		this.load.image('share1', 'assets/sprites/Level_complete/Share.png');
-		
-		
-    }
-	
-	create ()
-	{
-	
-		
-	}
-
-	
-}
 
 var player;
 var cursors;
@@ -140,7 +46,8 @@ var config = {
 	plugins: {
 		global: [ NineSlice.Plugin.DefaultCfg ],
 	},
-    scene: [PlayScreen, MainMenu, Score]
+    scene: [Score, PlayScreen, MainMenu]
+
 };
 
 var game = new Phaser.Game(config);
