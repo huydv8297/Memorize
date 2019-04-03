@@ -15,8 +15,6 @@
 
 <script type="text/javascript">
 
-const Plugin = require('phaser3-nineslice').NineSlicePlugin;
-
 class PlayScreen extends Phaser.Scene{
 
     constructor(){
@@ -101,8 +99,7 @@ class Score extends Phaser.Scene{
 
 	preload(){
 	
-		this.plugins.add(PhaserNineSlice.Plugin);
-		//this.load.nineSlice('popup', 'assets/sprites/WatchVideo/Base.png', 260, 50, 180, 380);
+		this.load.nineSlice('popup', 'assets/sprites/WatchVideo/Base.png', 260, 50, 180, 380);
 
 		this.load.image('icon', 'assets/sprites/Level_complete/icon.png');
 		this.load.image('main_menu', 'assets/sprites/Level_complete/main_menu.png');
@@ -140,7 +137,9 @@ var config = {
             debug: false
         }
     },
-
+	plugins: {
+		global: [ NineSlice.Plugin.DefaultCfg ],
+	},
     scene: [PlayScreen, MainMenu, Score]
 };
 
