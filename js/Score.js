@@ -2,7 +2,8 @@ class Score extends Phaser.Scene{
 	bestScore = 70;
 	particleArray = ['blue','blueblur', 'green', 'greenblur', 'pink', 'pinkblur', 'yellow', 'yellowblur'];
 	sprites = [];
-	
+	hasParticle = true;
+	time2 = 0;
     constructor(){
         super({key: 'Score', active: true});
     }
@@ -34,8 +35,6 @@ class Score extends Phaser.Scene{
 	{
 		
 	}
-	
-
 	
 	display(value)
 	{
@@ -104,39 +103,15 @@ class Score extends Phaser.Scene{
 	
 	addRandomParticles()
 	{
-
+		
 		//  Create the particles
+		
 		for (var i = 0; i < 300; i++)
 		{
 			var x = Phaser.Math.Between(-64, 800);
-			var y = Phaser.Math.Between(-64, 600);
+			var y = Phaser.Math.Between(-64, 300);
 
-			var image = this.add.image(x, y, this.particleArray[Math.floor(Math.random() * 8)]);
-
-			//  Canvas and WebGL:
-
-			// NORMAL
-			// ADD
-			// MULTIPLY
-			// SCREEN
-
-			//  Canvas only:
-
-			// OVERLAY
-			// DARKEN
-			// LIGHTEN
-			// COLOR_DODGE
-			// COLOR_BURN
-			// HARD_LIGHT
-			// SOFT_LIGHT
-			// DIFFERENCE
-			// EXCLUSION
-			// HUE
-			// SATURATION
-			// COLOR
-			// LUMINOSITY
-
-			image.setBlendMode(Phaser.BlendModes.ADD);
+			var image = this.add.image(x, y, this.particleArray[Math.floor(Math.random() * 8)]).setScale(0.4);
 
 			this.sprites.push({ s: image, r: 2 + Math.random() * 6 });
 		}
@@ -144,17 +119,39 @@ class Score extends Phaser.Scene{
 	
 	update()
 	{
-		for (var i = 0; i < this.sprites.length; i++)
+		
+		if(this.hasParticle)
 		{
-			var sprite = this.sprites[i].s;
-
-			sprite.y -= this.sprites[i].r;
-
-			if (sprite.y < -256)
+			this.time2 += 0.01;
+			console.log(this.time2);
+			for (var i = 0; i < this.sprites.length; i++)
 			{
-				sprite.y = 700;
+				var sprite = this.sprites[i].s;
+				
+				sprite.y -= this.sprites[i].r;
+
+				if (sprite.y < -256)
+				{
+					sprite.y = 150;
+				}
+				
+				
 			}
+			
+			if(this.time2 >= 1)
+			{
+				this.time2 = 0;
+				this.hasParticle = false;
+				for (var i = 0; i < this.sprites.length; i++)
+				{
+					var sprite = this.sprites[i].s;
+					sprite.destroy();
+				}
+				
+			}
+
 		}
+		
 	}
 	
 }
