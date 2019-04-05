@@ -3,7 +3,7 @@ class PlayScreen extends Phaser.Scene{
     constructor(){
         super({ key: 'PlayScreen', active: false});
     }
-    
+
     preload(){
         this.load.image('background', 'assets/sprites/Gameplay/NewBG.png');
         this.load.image('base-bg-btn', 'assets/sprites/Gameplay/New Update/Header-Btn-Base.png');
@@ -15,8 +15,13 @@ class PlayScreen extends Phaser.Scene{
         this.load.image('heart', 'assets/sprites/Gameplay/New Update/Heart.png');
         this.load.image('time-white', 'assets/sprites/Gameplay/Time-white.png');
         this.load.image('time-left', 'assets/sprites/Gameplay/Time-left.png');
+
+        this.load.image('tile-base', 'assets/sprites/Gameplay/New Update/Tile-Base.png');
+        this.load.image('tile-cover', 'assets/sprites/Gameplay/New Update/Tile-Cover.png');
+        this.load.image('blue-tile-base', 'assets/sprites/Gameplay/New Update/Blue-Tile-Base.png');
+        this.load.image('blue-tile-cover', 'assets/sprites/Gameplay/New Update/Blue-Tile-Cover.png');
     }
-    
+
     create ()
     {
         this.add.image(216, 384,'background').setScale(0.5);
@@ -46,7 +51,7 @@ class PlayScreen extends Phaser.Scene{
             50,
             "Level 1",
             {
-                size: "100px",
+                size: "150px",
                 fill: "#68707c",
                 align: "center",
                 fontFamily: 'SourceSansPro-Regular',
@@ -59,7 +64,64 @@ class PlayScreen extends Phaser.Scene{
         header.create(372, 50, 'sound-btn').setScale(0.39).refreshBody();
 
         header.create(216, 100, 'time-white').setScale(0.395).refreshBody();
-        header.create(167, 98, 'time-left').setScale(0.396).refreshBody();
+        var time_left = header.create(29, 94.5, 'time-left').setScale(0.395).refreshBody();
+        time_left.setOrigin(0);
+        time_left.scaleX = 0.5;
+
+        var tiles = [];
+        for(var i = 0; i < 3; i++)
+        {
+            for(var j = 0; j < 3; j++)
+            {
+                this.add.image(100 + 88 * i, 302 + 81 * j,'tile-base').setScale(0.55);
+                var tile = this.add.image(100 + 88 * i, 300 + 81 * j,'tile-cover').setScale(0.55);
+
+                tile.setInteractive();
+                tile.on('pointerdown', () => {
+                    {
+                        tile.setInteractive(false);
+
+                        tile.y += 4;
+
+                        var delayInMilliseconds = 400;
+                        setTimeout(() => {
+                            tile.y -= 4;
+                            //this.add.image(tile.x, tile.y + 2,'blue-tile-base').setScale(0.55);
+                            //this.add.image(tile.x, tile.y,'blue-tile-cover').setScale(0.55);
+                            tile.changeTexture('blue-tile-cover');
+                        }, delayInMilliseconds);
+                        console.log("Hit tile");
+                    }
+                });
+                tiles.push(tile);
+            }
+        }
+        
+        /*
+        // Load a map from a 2D array of tile indices
+        var level = [
+            [  0,   0,   0],
+            [  0,   0,   0],
+            [  0,   0,   0],
+        ];
+
+        // When loading from an array, make sure to specify the tileWidth and tileHeight
+        var map_1 = this.make.tilemap({ data: level, tileWidth: 171, tileHeight: 157 });
+        var tiles_1 = map_1.addTilesetImage("tile1");
+        var layer_1 = map_1.createStaticLayer(0, tiles_1, 55, 255);
+        layer_1.setScale(0.65);
+
+        var map_3 = this.make.tilemap({ data: level, tileWidth: 171, tileHeight: 157 });
+        var tiles_3 = map_3.addTilesetImage("tile3");
+        var layer_3 = map_3.createStaticLayer(0, tiles_3, 55, 255);
+        layer_3.setScale(0.65);
+        map_3.setCollisionBetween(0, 0);
+        map_3.setTileIndexCallback(0, this.hitTile, this);*/
+    }
+
+    hitTile(tile) {
+        tile.y += 2;
+        console.log("Hit tile");
     }
 
     update ()
