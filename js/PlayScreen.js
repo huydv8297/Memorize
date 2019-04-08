@@ -51,10 +51,10 @@ class PlayScreen extends Phaser.Scene{
             50,
             "Level 1",
             {
-                size: "150px",
+                font: "25px Arial",
                 fill: "#68707c",
                 align: "center",
-                fontFamily: 'SourceSansPro-Regular',
+                //fontFamily: 'SourceSansPro-Regular',
             }
         );
 
@@ -73,29 +73,56 @@ class PlayScreen extends Phaser.Scene{
         {
             for(var j = 0; j < 3; j++)
             {
-                this.add.image(100 + 88 * i, 302 + 81 * j,'tile-base').setScale(0.55);
-                var tile = this.add.image(100 + 88 * i, 300 + 81 * j,'tile-cover').setScale(0.55);
+                var tile_base = this.add.sprite(100 + 88 * i, 302 + 81 * j,'tile-base').setScale(0.55);
+                var tile = this.add.sprite(100 + 88 * i, 300 + 81 * j,'tile-cover').setScale(0.55);
 
                 tile.setInteractive();
                 tile.on('pointerdown', () => {
-                    {
-                        tile.setInteractive(false);
+                    tile.y += 4;
 
-                        tile.y += 4;
-
-                        var delayInMilliseconds = 400;
-                        setTimeout(() => {
-                            tile.y -= 4;
-                            //this.add.image(tile.x, tile.y + 2,'blue-tile-base').setScale(0.55);
-                            //this.add.image(tile.x, tile.y,'blue-tile-cover').setScale(0.55);
-                            tile.changeTexture('blue-tile-cover');
-                        }, delayInMilliseconds);
-                        console.log("Hit tile");
-                    }
+                    var delayInMilliseconds = 400;
+                    setTimeout(() => {
+                        tile.y -= 4;
+                        tile_base.setTexture('blue-tile-base');
+                        tile.setTexture('blue-tile-cover');
+                        this.add.text(
+                            tile.x - 8,
+                            tile.y - 15,
+                            "1",
+                            {
+                                font: "25px Arial",
+                                fill: "#fff",
+                                align: "center",
+                                fontFamily: 'SourceSansPro-Regular',
+                            }
+                        );
+                    }, delayInMilliseconds);
+                    console.log("Hit tile");
                 });
                 tiles.push(tile);
             }
         }
+
+        /*for(var i = 0; i < tiles.length; i++)
+        {
+            console.log(tiles[i].x);
+            tiles[i].setInteractive();
+            var tile = tiles[i];
+            tile.on('pointerdown', () => {
+                tile.y += 4;
+
+                var delayInMilliseconds = 400;
+                setTimeout(() => {
+                    tile.y -= 4;
+                    this.add.image(tile.x, tile.y + 2,'blue-tile-base').setScale(0.55);
+                    this.add.image(tile.x, tile.y,'blue-tile-cover').setScale(0.55);
+                    tile.destroy();
+                    tile_base.destroy();
+                }, delayInMilliseconds);
+                console.log("Hit tile");
+                console.log(tile.y);
+            });
+        }*/
         
         /*
         // Load a map from a 2D array of tile indices
