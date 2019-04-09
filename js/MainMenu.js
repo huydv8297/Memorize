@@ -30,10 +30,11 @@ class MainMenu extends Phaser.Scene{
 		
 		playButton.on('pointerdown', ()=> {
 			this.sound.play('button_click');
-			score.display(70);
-			//this.scene.setVisible(true, 'PlayScreen');
-			//this.scene.setVisible(false, 'MainMenu');
-			//this.scene.switch('PlayScreen');
+			//score.display(70);
+			
+			this.scene.setVisible(true, 'PlayScreen');
+			this.scene.setVisible(false, 'MainMenu');
+			this.scene.switch('PlayScreen');
 			
 			
 		});

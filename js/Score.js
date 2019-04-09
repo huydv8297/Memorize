@@ -1,11 +1,12 @@
 class Score extends Phaser.Scene{
-	bestScore = 70;
-	particleArray = ['blue','blueblur', 'green', 'greenblur', 'pink', 'pinkblur', 'yellow', 'yellowblur'];
-	sprites = [];
-	hasParticle = true;
-	time2 = 0;
+	
     constructor(){
-        super({key: 'Score', active: true});
+		super({key: 'Score', active: true});
+		this.bestScore = 70;
+		this.particleArray = ['blue','blueblur', 'green', 'greenblur', 'pink', 'pinkblur', 'yellow', 'yellowblur'];
+		this.sprites = [];
+		this.hasParticle = true;
+		this.time2 = 0;
     }
 	
 	preload(){
