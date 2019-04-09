@@ -1,7 +1,12 @@
 class PlayScreen extends Phaser.Scene{
-
-    constructor(){
+    constructor() {
         super({ key: 'PlayScreen', active: false});
+        this.current_level = 1;
+        this.current_total_row_tiles = 2;
+        this.current_total_col_tiles = 2;
+        this.current_total_numbers = 2;
+        this.screen_width = 432;
+        this.screen_height = 768;
     }
 
     preload(){
@@ -24,13 +29,19 @@ class PlayScreen extends Phaser.Scene{
 
     create ()
     {
+        this.create_ui_header();
+        this.create_board_game();
+    }
+
+    create_ui_header()
+    {
         this.add.image(216, 384,'background').setScale(0.5);
 
-        var header = this.physics.add.staticGroup();
+        let header = this.physics.add.staticGroup();
 
         header.create(60, 60, 'base-bg-btn').setScale(0.395).refreshBody();
         header.create(60, 55, 'shadow-bg-btn').setScale(0.39).refreshBody();
-        var exitButton = header.create(60, 50, 'exit-btn').setScale(0.39).refreshBody();
+        let exitButton = header.create(60, 50, 'exit-btn').setScale(0.39).refreshBody();
 		exitButton.setInteractive();
 		exitButton.on('pointerdown', ()=> {
 			this.sound.play('button_click');
@@ -39,17 +50,15 @@ class PlayScreen extends Phaser.Scene{
 			this.scene.switch('MainMenu');			
 		});
 		
-		
-		
         header.create(216, 57, 'header-base').setScale(0.42).refreshBody();
         header.create(250, 57, 'heart').setScale(0.45).refreshBody();
         header.create(280, 57, 'heart').setScale(0.45).refreshBody();
         header.create(310, 57, 'heart').setScale(0.45).refreshBody();
 
         this.levelText = this.add.text(
-            120,
-            50,
-            "Level 1",
+            122,
+            42,
+            "Level " + this.current_level,
             {
                 font: "25px Arial",
                 fill: "#68707c",
@@ -67,20 +76,26 @@ class PlayScreen extends Phaser.Scene{
         var time_left = header.create(29, 94.5, 'time-left').setScale(0.395).refreshBody();
         time_left.setOrigin(0);
         time_left.scaleX = 0.5;
+    }
 
-        var tiles = [];
-        for(var i = 0; i < 3; i++)
+    create_board_game()
+    {
+        //let tiles = [];
+        let start_x = 0.5 * (this.screen_width - this.current_total_col_tiles * 88 + 88);
+        let start_y = 200 + 0.5 * (this.screen_height - 300 - this.current_total_row_tiles * 81 + 81);
+        
+        for(let col = 0; col < this.current_total_col_tiles; col++)
         {
-            for(var j = 0; j < 3; j++)
+            for(let row = 0; row < this.current_total_row_tiles; row++)
             {
-                var tile_base = this.add.sprite(100 + 88 * i, 302 + 81 * j,'tile-base').setScale(0.55);
-                var tile = this.add.sprite(100 + 88 * i, 300 + 81 * j,'tile-cover').setScale(0.55);
+                let tile_base = this.add.sprite(start_x + 88 * col, start_y + 2 + 81 * row,'tile-base').setScale(0.55);
+                let tile = this.add.sprite(start_x + 88 * col, start_y + 81 * row,'tile-cover').setScale(0.55);
 
                 tile.setInteractive();
                 tile.on('pointerdown', () => {
                     tile.y += 4;
 
-                    var delayInMilliseconds = 400;
+                    let delayInMilliseconds = 400;
                     setTimeout(() => {
                         tile.y -= 4;
                         tile_base.setTexture('blue-tile-base');
@@ -93,62 +108,13 @@ class PlayScreen extends Phaser.Scene{
                                 font: "25px Arial",
                                 fill: "#fff",
                                 align: "center",
-                                fontFamily: 'SourceSansPro-Regular',
                             }
                         );
                     }, delayInMilliseconds);
-                    console.log("Hit tile");
                 });
-                tiles.push(tile);
+                //tiles.push(tile);
             }
         }
-
-        /*for(var i = 0; i < tiles.length; i++)
-        {
-            console.log(tiles[i].x);
-            tiles[i].setInteractive();
-            var tile = tiles[i];
-            tile.on('pointerdown', () => {
-                tile.y += 4;
-
-                var delayInMilliseconds = 400;
-                setTimeout(() => {
-                    tile.y -= 4;
-                    this.add.image(tile.x, tile.y + 2,'blue-tile-base').setScale(0.55);
-                    this.add.image(tile.x, tile.y,'blue-tile-cover').setScale(0.55);
-                    tile.destroy();
-                    tile_base.destroy();
-                }, delayInMilliseconds);
-                console.log("Hit tile");
-                console.log(tile.y);
-            });
-        }*/
-        
-        /*
-        // Load a map from a 2D array of tile indices
-        var level = [
-            [  0,   0,   0],
-            [  0,   0,   0],
-            [  0,   0,   0],
-        ];
-
-        // When loading from an array, make sure to specify the tileWidth and tileHeight
-        var map_1 = this.make.tilemap({ data: level, tileWidth: 171, tileHeight: 157 });
-        var tiles_1 = map_1.addTilesetImage("tile1");
-        var layer_1 = map_1.createStaticLayer(0, tiles_1, 55, 255);
-        layer_1.setScale(0.65);
-
-        var map_3 = this.make.tilemap({ data: level, tileWidth: 171, tileHeight: 157 });
-        var tiles_3 = map_3.addTilesetImage("tile3");
-        var layer_3 = map_3.createStaticLayer(0, tiles_3, 55, 255);
-        layer_3.setScale(0.65);
-        map_3.setCollisionBetween(0, 0);
-        map_3.setTileIndexCallback(0, this.hitTile, this);*/
-    }
-
-    hitTile(tile) {
-        tile.y += 2;
-        console.log("Hit tile");
     }
 
     update ()
