@@ -1,7 +1,7 @@
 class PlayScreen extends Phaser.Scene{
 
     constructor(){
-        super({ key: 'PlayScreen', active: false});
+        super({ key: 'PlayScreen', active: true});
     }
     
     preload(){
@@ -61,6 +61,19 @@ class PlayScreen extends Phaser.Scene{
         header.create(216, 100, 'time-white').setScale(0.395).refreshBody();
         header.create(167, 98, 'time-left').setScale(0.396).refreshBody();
     }
+	
+	display()
+	{
+		this.scene.wake('PlayScreen');
+		this.scene.setVisible(true, 'PlayScreen');
+		this.scene.bringToTop('PlayScreen');
+	}
+	
+	dispose()
+	{
+		this.scene.setVisible(false, 'PlayScreen');
+		//this.scene.sleep('PlayScreen');
+	}
 
     update ()
     {

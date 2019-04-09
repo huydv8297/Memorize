@@ -8,6 +8,8 @@
 	<script src="js/PlayScreen.js"></script>
 	<script src="js/MainMenu.js"></script>
 	<script src="js/Score.js"></script>
+	<script src="js/Particle.js"></script>
+	<script src="js/NextLevel.js"></script>
     <style type="text/css">
         body {
             margin: 0;
@@ -34,6 +36,8 @@ var scoreText;
 var score = new Score();
 var playScreen = new PlayScreen();
 var mainMenu = new MainMenu();
+var particle = new Particle();
+var nextLevel = new NextLevel();
 
 var config = {
     type: Phaser.AUTO,
@@ -49,7 +53,7 @@ var config = {
 	plugins: {
 		global: [ NineSlice.Plugin.DefaultCfg ],
 	},
-    scene: [score,mainMenu, playScreen]
+    scene: [mainMenu, nextLevel, particle, score, playScreen]
 
 };
 
