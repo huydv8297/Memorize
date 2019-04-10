@@ -1,10 +1,8 @@
 class Particle extends Phaser.Scene{
-	particleArray = ['blue', 'green','yellow',  'pink','blueblur', 'pinkblur', 'greenblur', 'yellowblur'];
-	sprites = [];
-	hasParticle = true;
-	time2 = 0;
+	
 	constructor(){
         super({key: 'Particle', active: true});
+		particleArray = ['blue', 'green','yellow',  'pink','blueblur', 'pinkblur', 'greenblur', 'yellowblur'];
     }
 	
 	preload(){	
@@ -19,10 +17,6 @@ class Particle extends Phaser.Scene{
 				
    }
 	
-	create ()
-	{
-		
-	}
 	
 	display()
 	{
@@ -57,17 +51,6 @@ class Particle extends Phaser.Scene{
 		this.time.delayedCall(5000, function() {
 			particles.destroy();
 		});
-		/*
-		for (var i = 0; i < 100; i++)
-		{
-			var x = Phaser.Math.Between(100, 300);
-			var y = Phaser.Math.Between(200, 250);
-
-			var image = this.add.image(x, y, this.particleArray[Math.floor(Math.random() * 4)]).setScale(0.4);
-			image.setScale(0.18);
-			this.sprites.push({ s: image, r: 1 + Math.random() * 6 });
-		}
-		*/
 	}
 	
 	dispose()
@@ -76,54 +59,6 @@ class Particle extends Phaser.Scene{
 		//this.scene.sleep('Particle');
 	}
 	
-	update()
-	{
-		
-		/*
-		if(this.hasParticle)
-		{
-			this.time2 += 0.01;
-			console.log(this.time2);
-			for (var i = 0; i < this.sprites.length; i++)
-			{
-				var sprite = this.sprites[i].s;
-				
-				sprite.y -= this.sprites[i].r;
-				if(sprite.x > 210)
-				{
-					sprite.x += this.sprites[i].r;
-				}else{
-					sprite.x -= this.sprites[i].r;
-				}
 
-				if (sprite.y < -256)
-				{
-					sprite.y = 150;
-				}
-				
-				if(sprite.x > 500 || sprite.x < -10){
-					sprite.x = Phaser.Math.Between(100, 300);
-				}
-				
-				
-			}
-			
-			if(this.time2 >= 10)
-			{
-				this.time2 = 0;
-				this.hasParticle = false;
-				for (var i = 0; i < this.sprites.length; i++)
-				{
-					var sprite = this.sprites[i].s;
-					sprite.destroy();
-				}
-				
-			}
-
-		}
-		
-		*/
-	}
-	
 	
 }
