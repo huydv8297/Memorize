@@ -1,4 +1,5 @@
 class PlayScreen extends Phaser.Scene{
+
     constructor() {
         super({ key: 'PlayScreen', active: false});
         this.current_level = 1;
@@ -15,9 +16,9 @@ class PlayScreen extends Phaser.Scene{
 		this.time_left_max = 5.0;
 		this.time_left = this.time_left_max;
 		this.time_left_ui;
-		this.timedEvent;
+        this.timedEvent;
     }
-	
+
     preload(){
         this.load.image('background', 'assets/sprites/Gameplay/NewBG.png');
         this.load.image('base-bg-btn', 'assets/sprites/Gameplay/New Update/Header-Btn-Base.png');
@@ -95,6 +96,19 @@ class PlayScreen extends Phaser.Scene{
         this.time_left_ui.setOrigin(0);
         
     }
+	
+	display()
+	{
+		this.scene.wake('PlayScreen');
+		this.scene.setVisible(true, 'PlayScreen');
+		this.scene.bringToTop('PlayScreen');
+	}
+	
+	dispose()
+	{
+		this.scene.setVisible(false, 'PlayScreen');
+		//this.scene.sleep('PlayScreen');
+	}
 
     create_board_game()
     {

@@ -1,35 +1,24 @@
 class Score extends Phaser.Scene{
-	
+
     constructor(){
-		super({key: 'Score', active: true});
-		this.bestScore = 70;
-		this.particleArray = ['blue','blueblur', 'green', 'greenblur', 'pink', 'pinkblur', 'yellow', 'yellowblur'];
-		this.sprites = [];
-		this.hasParticle = true;
-		this.time2 = 0;
+			this.bestScore = 70;
+			super({key: 'Score', active: true});
+			this.bestScore = 70;
+			this.particleArray = ['blue','blueblur', 'green', 'greenblur', 'pink', 'pinkblur', 'yellow', 'yellowblur'];
+			this.sprites = [];
+			this.hasParticle = true;
+			this.time2 = 0;
     }
 	
 	preload(){
 		this.load.image('popup', 'assets/sprites/WatchVideo/Base.png', 260, 50, 180, 380);
-		this.load.image('background', 'assets/sprites/Gameplay/NewBG.png');
+		this.load.image('background1', 'assets/sprites/Gameplay/NewBG.png');
 		this.load.image('icon', 'assets/sprites/Level_complete/icon.png');
 		this.load.image('main_menu', 'assets/sprites/Level_complete/main_menu.png');
-		this.load.image('medal', 'assets/sprites/Level_complete/medal.png');
 		this.load.image('next_level', 'assets/sprites/Level_complete/next_level.png');
 		this.load.image('replay', 'assets/sprites/Level_complete/Replay.png');
 		this.load.image('shadow', 'assets/sprites/Level_complete/Shadow.png');
 		this.load.image('share1', 'assets/sprites/Level_complete/Share.png');
-		
-		
-		this.load.image('blue', 'assets/sprites/WinPopup/Blue.png');
-		this.load.image('blueblur', 'assets/sprites/WinPopup/BlueBlur.png');
-		this.load.image('green', 'assets/sprites/WinPopup/Green.png');
-		this.load.image('greenblur', 'assets/sprites/WinPopup/GreenBlur.png');
-		this.load.image('pink', 'assets/sprites/WinPopup/Pink.png');
-		this.load.image('pinkblur', 'assets/sprites/WinPopup/PinkBlur.png');
-		this.load.image('yellow', 'assets/sprites/WinPopup/Yellow.png');
-		this.load.image('yellowblur', 'assets/sprites/WinPopup/YellowBlur.png');
-		
    }
 	
 	create ()
@@ -39,10 +28,10 @@ class Score extends Phaser.Scene{
 	
 	display(value)
 	{
-		this.add.image(235, 384,'background').setScale(0.4);
+		this._display();
+		//this.add.image(235, 384,'background1').setScale(0.4);
 		
 		//particles
-		this.addRandomParticles();
 		
 		this.add.nineslice(60, 120, 300/0.4, 420/0.4, 'popup', [260, 50, 50, 50]).setScale(0.4);
 		
@@ -69,16 +58,18 @@ class Score extends Phaser.Scene{
 
 		//add button
 		this.addButton('replay', 120, 460, 0.4, ()=>{
-			
+			nextLevel.display();
+			score.dispose();
+			particle.dispose();
 		});
 		this.addButton('share1', 120 + 90, 460, 0.4, ()=>{
 			
 		});
 		this.addButton('main_menu', 120  + 180, 460, 0.4, ()=>{
-			this.scene.wake('MainMenu');
-			this.scene.setVisible(true, 'MainMenu');
-			this.scene.setVisible(false, 'Score');
-			this.scene.bringToTop('MainMenu');
+
+			mainMenu.display();
+			score.dispose();
+			particle.dispose();
 		});
 		
 		var numb = this.add.text(215, 320, value, {
@@ -88,10 +79,7 @@ class Score extends Phaser.Scene{
 		});
 		
 		numb.setOrigin(0.5);
-		this.scene.setVisible(true, 'Score');
-		this.scene.setVisible(false, 'MainMenu');
-		this.scene.sleep('MainMenu');
-		this.scene.bringToTop('Score');
+		particle.display();
 	}
 	
 	addButton(key, positionX, positionY, scale, callback)
@@ -102,23 +90,14 @@ class Score extends Phaser.Scene{
 		button.on('pointerdown', callback);
 	}
 	
-	addRandomParticles()
+	_display()
 	{
-		
-		//  Create the particles
-		
-		for (var i = 0; i < 300; i++)
-		{
-			var x = Phaser.Math.Between(-64, 800);
-			var y = Phaser.Math.Between(-64, 300);
-
-			var image = this.add.image(x, y, this.particleArray[Math.floor(Math.random() * 8)]).setScale(0.4);
-
-			this.sprites.push({ s: image, r: 2 + Math.random() * 6 });
-		}
+		//this.scene.wake('Score');
+		this.scene.setVisible(true, 'Score');
+		this.scene.bringToTop('Score');
 	}
 	
-	update()
+	dispose()
 	{
 		
 		if(this.hasParticle)
@@ -153,5 +132,4 @@ class Score extends Phaser.Scene{
 		}
 		
 	}
-	
 }

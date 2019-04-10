@@ -30,16 +30,13 @@ class MainMenu extends Phaser.Scene{
 		
 		playButton.on('pointerdown', ()=> {
 			this.sound.play('button_click');
-			//score.display(70);
-			
-			this.scene.setVisible(true, 'PlayScreen');
-			this.scene.setVisible(false, 'MainMenu');
-			this.scene.switch('PlayScreen');
-			
-			
-		});
-		
 
+			playScreen.display();
+			mainMenu.dispose();
+			//this.scene.setVisible(true, 'PlayScreen');
+			//this.scene.setVisible(false, 'MainMenu');
+			//this.scene.switch('PlayScreen');
+		});
 		
 		this.add.image(85, 650,'share').setScale(0.4);
 		this.add.image(85 * 2, 650,'more_game').setScale(0.4);
@@ -48,11 +45,27 @@ class MainMenu extends Phaser.Scene{
 		
 		this.scene.setVisible(false, 'Score');
 		this.scene.setVisible(false, 'PlayScreen');
+		this.scene.setVisible(false, 'Particle');
+		this.scene.setVisible(false, 'NextLevel');
 
 	}
-
+	
+	display()
+	{
+		this.scene.wake('MainMenu');
+		this.scene.setVisible(true, 'MainMenu');
+		this.scene.bringToTop('MainMenu');
+	}
+	
+	dispose()
+	{
+		this.scene.setVisible(false, 'MainMenu');
+		//this.scene.sleep('MainMenu');
+	}
+	
 	update ()
 	{
 		
 	}
+	
 }
