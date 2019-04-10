@@ -8,10 +8,16 @@ class PlayScreen extends Phaser.Scene{
         this.current_number_question = 1;
         this.screen_width = 432;
         this.screen_height = 768;
+
         this.hearts = [];
         this.total_hearts = 3;
-    }
 
+		this.time_left_max = 5.0;
+		this.time_left = this.time_left_max;
+		this.time_left_ui;
+		this.timedEvent;
+    }
+	
     preload(){
         this.load.image('background', 'assets/sprites/Gameplay/NewBG.png');
         this.load.image('base-bg-btn', 'assets/sprites/Gameplay/New Update/Header-Btn-Base.png');
@@ -31,11 +37,17 @@ class PlayScreen extends Phaser.Scene{
         this.load.image('red-tile-base', 'assets/sprites/Gameplay/New Update/Red-Tile-Base.png');
         this.load.image('red-tile-cover', 'assets/sprites/Gameplay/New Update/Red-Tile-Cover.png');
     }
+	
+	onEvent()
+	{
+		
+	}
 
     create ()
     {
         this.create_ui_header();
         this.create_board_game();
+		//this.timedEvent = this.time.addEvent(300000, this.onEvent, [], this);
     }
 
     create_ui_header()
@@ -77,10 +89,11 @@ class PlayScreen extends Phaser.Scene{
         header.create(372, 55, 'shadow-bg-btn').setScale(0.39).refreshBody();
         header.create(372, 50, 'sound-btn').setScale(0.39).refreshBody();
 
-        header.create(216, 100, 'time-white').setScale(0.395).refreshBody();
-        var time_left = header.create(29, 94.5, 'time-left').setScale(0.395).refreshBody();
-        time_left.setOrigin(0);
-        time_left.scaleX = 0.5;
+        let time_ui = header.create(21, 100, 'time-white').setScale(0.395).refreshBody();
+		time_ui.setOrigin(0);
+        this.time_left_ui = header.create(21, 100, 'time-left').setScale(0.395).refreshBody();
+        this.time_left_ui.setOrigin(0);
+        
     }
 
     create_board_game()
@@ -235,8 +248,19 @@ class PlayScreen extends Phaser.Scene{
         }, 4000);
     }
 
-    update ()
+    update (time, delta)
     {
-        
+        if(this.time_left > 0)
+		{
+			this.time_left -= delta/1000;
+			this.time_left_ui.scaleX = 0.395 * this.time_left/this.time_left_max;
+		}else{
+			score.display(10);
+		}
+		
+		
     }
+	
+	
+
 }

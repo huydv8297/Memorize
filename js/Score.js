@@ -124,7 +124,6 @@ class Score extends Phaser.Scene{
 		if(this.hasParticle)
 		{
 			this.time2 += 0.01;
-			//console.log(this.time2);
 			for (var i = 0; i < this.sprites.length; i++)
 			{
 				var sprite = this.sprites[i].s;
