@@ -5,8 +5,11 @@ class PlayScreen extends Phaser.Scene{
         this.current_total_row_tiles = 2;
         this.current_total_col_tiles = 2;
         this.current_total_numbers = 2;
+        this.current_number_question = 1;
         this.screen_width = 432;
         this.screen_height = 768;
+        this.hearts = [];
+        this.total_hearts = 3;
     }
 
     preload(){
@@ -25,6 +28,8 @@ class PlayScreen extends Phaser.Scene{
         this.load.image('tile-cover', 'assets/sprites/Gameplay/New Update/Tile-Cover.png');
         this.load.image('blue-tile-base', 'assets/sprites/Gameplay/New Update/Blue-Tile-Base.png');
         this.load.image('blue-tile-cover', 'assets/sprites/Gameplay/New Update/Blue-Tile-Cover.png');
+        this.load.image('red-tile-base', 'assets/sprites/Gameplay/New Update/Red-Tile-Base.png');
+        this.load.image('red-tile-cover', 'assets/sprites/Gameplay/New Update/Red-Tile-Cover.png');
     }
 
     create ()
@@ -49,11 +54,11 @@ class PlayScreen extends Phaser.Scene{
 			this.scene.setVisible(false, 'PlayScreen');
 			this.scene.switch('MainMenu');			
 		});
-		
+        
         header.create(216, 57, 'header-base').setScale(0.42).refreshBody();
-        header.create(250, 57, 'heart').setScale(0.45).refreshBody();
-        header.create(280, 57, 'heart').setScale(0.45).refreshBody();
-        header.create(310, 57, 'heart').setScale(0.45).refreshBody();
+        this.hearts.push(header.create(250, 57, 'heart').setScale(0.45).refreshBody());
+        this.hearts.push(header.create(280, 57, 'heart').setScale(0.45).refreshBody());
+        this.hearts.push(header.create(310, 57, 'heart').setScale(0.45).refreshBody());
 
         this.levelText = this.add.text(
             122,
@@ -83,7 +88,51 @@ class PlayScreen extends Phaser.Scene{
         //let tiles = [];
         let start_x = 0.5 * (this.screen_width - this.current_total_col_tiles * 88 + 88);
         let start_y = 200 + 0.5 * (this.screen_height - 300 - this.current_total_row_tiles * 81 + 81);
-        
+        let numbers = [];
+        let have_numbers = []
+        for(let i = 0; i < this.current_total_row_tiles * this.current_total_col_tiles; i++)
+        {
+            numbers.push(-1);
+            have_numbers.push(false);
+        }
+
+        for(let i = 0; i < this.current_total_numbers; i++)
+        {
+            let min = 0; 
+            let max = this.current_total_row_tiles * this.current_total_col_tiles;  
+            let random = Math.floor(Math.random() * (+max - +min)) + +min; 
+
+            while(have_numbers[random])
+            {
+                random = Math.floor(Math.random() * (+max - +min)) + +min; 
+            }
+
+            numbers[random] = i + 1;
+            have_numbers[random] = true;
+        }
+
+        let index_tile = 0;
+        let count_right_answer = 0;
+
+        let tile_base_question = this.add.sprite(268, 151,'blue-tile-base').setScale(0.45);
+        let tile_question = this.add.sprite(268, 151,'blue-tile-cover').setScale(0.45);
+
+        tile_base_question.setVisible(false);
+        tile_question.setVisible(false);
+
+        let question_text = this.add.text(
+            90,
+            130,
+            "Where is    " + this.current_number_question + "    ?",
+            {
+                font: "33px Arial",
+                fill: "#fff",
+                align: "center",
+            }
+        );
+
+        question_text.setVisible(false);
+
         for(let col = 0; col < this.current_total_col_tiles; col++)
         {
             for(let row = 0; row < this.current_total_row_tiles; row++)
@@ -91,30 +140,99 @@ class PlayScreen extends Phaser.Scene{
                 let tile_base = this.add.sprite(start_x + 88 * col, start_y + 2 + 81 * row,'tile-base').setScale(0.55);
                 let tile = this.add.sprite(start_x + 88 * col, start_y + 81 * row,'tile-cover').setScale(0.55);
 
-                tile.setInteractive();
-                tile.on('pointerdown', () => {
-                    tile.y += 4;
+                let text_tile = '?';
 
-                    let delayInMilliseconds = 400;
+                if(numbers[index_tile] != -1)
+                {
+                    text_tile = numbers[index_tile];
+                }
+                index_tile++;
+
+                let text_answer = this.add.text(
+                    tile.x - 8,
+                    tile.y - 15,
+                    text_tile,
+                    {
+                        font: "25px Arial",
+                        fill: "#fff",
+                        align: "center",
+                    }
+                );
+                text_answer.setVisible(false);
+
+                let delayInMilliseconds = 500;
+
+                setTimeout(() => {
+                    delayInMilliseconds = 3000;
+
+                    tile.y += 4;
+                    tile_base.setTexture('blue-tile-base');
+                    tile.setTexture('blue-tile-cover');
+
+                    text_answer.setVisible(true);
                     setTimeout(() => {
                         tile.y -= 4;
-                        tile_base.setTexture('blue-tile-base');
-                        tile.setTexture('blue-tile-cover');
-                        this.add.text(
-                            tile.x - 8,
-                            tile.y - 15,
-                            "1",
-                            {
-                                font: "25px Arial",
-                                fill: "#fff",
-                                align: "center",
-                            }
-                        );
+                        tile_base.setTexture('tile-base');
+                        tile.setTexture('tile-cover');
+                        text_answer.setVisible(false);
                     }, delayInMilliseconds);
-                });
+
+                    tile.setInteractive();
+                    tile.on('pointerdown', () => {
+                        tile.y += 4;
+                        
+                        delayInMilliseconds = 400;
+                        setTimeout(() => {
+                            this.input.disable(tile);
+
+                            tile.y -= 4;
+
+                            if(text_tile == this.current_number_question)
+                            {
+                                tile_base.setTexture('blue-tile-base');
+                                tile.setTexture('blue-tile-cover');
+                                count_right_answer++;
+                                if(count_right_answer == this.current_total_numbers)
+                                {
+                                    this.current_level++;
+                                    this.current_number_question = 1;
+                                    question_text.setText("        Done !");
+                                    tile_base_question.setVisible(false);
+                                    tile_question.setVisible(false);
+                                }
+                                else
+                                {
+                                    this.current_number_question++;
+                                    question_text.setText("Where is    " + this.current_number_question + "    ?");
+                                }
+                            }
+                            else
+                            {
+                                tile_base.setTexture('red-tile-base');
+                                tile.setTexture('red-tile-cover');
+
+                                this.total_hearts--;
+                                this.hearts[this.total_hearts].setVisible(false);
+                                if(this.total_hearts == 0)
+                                {
+                                    score.display(this.current_level - 1);                                
+                                }
+                            }
+
+                            text_answer.setVisible(true);
+                        }, delayInMilliseconds);
+                    });
+                }, delayInMilliseconds);
+                
                 //tiles.push(tile);
             }
         }
+
+        setTimeout(() => {
+            tile_base_question.setVisible(true);
+            tile_question.setVisible(true);
+            question_text.setVisible(true);
+        }, 4000);
     }
 
     update ()
