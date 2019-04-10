@@ -1,9 +1,8 @@
 class Score extends Phaser.Scene{
 
     constructor(){
-			this.bestScore = 70;
 			super({key: 'Score', active: true});
-			this.bestScore = 70;
+			this.bestScore = 0;
 			this.particleArray = ['blue','blueblur', 'green', 'greenblur', 'pink', 'pinkblur', 'yellow', 'yellowblur'];
 			this.sprites = [];
 			this.hasParticle = true;
@@ -44,10 +43,12 @@ class Score extends Phaser.Scene{
 			icon.setVisible(false);
 			
 			this.add.text(215,390, 'Best ' + this.bestScore, {
-			font: "25px Arial",
-			fill: "#000000",
-			align: "center"
-		}).setOrigin(0.5);
+				font: "25px Arial",
+				fill: "#000000",
+				align: "center"
+			}).setOrigin(0.5);
+		}else{
+			this.bestScore = value;
 		}
 		
 		this.add.text(100, 150, title, {
@@ -58,8 +59,8 @@ class Score extends Phaser.Scene{
 
 		//add button
 		this.addButton('replay', 120, 460, 0.4, ()=>{
-			nextLevel.display();
 			score.dispose();
+			playScreen.replay();
 			particle.dispose();
 		});
 		this.addButton('share1', 120 + 90, 460, 0.4, ()=>{
@@ -68,15 +69,18 @@ class Score extends Phaser.Scene{
 		this.addButton('main_menu', 120  + 180, 460, 0.4, ()=>{
 
 			mainMenu.display();
+			playScreen.dispose();
 			score.dispose();
 			particle.dispose();
 		});
 		
-		var numb = this.add.text(215, 320, value, {
+		var numb = this.add.text(210, 320, value, {
 			font: "80px Arial",
 			fill: "#FF8800",
 			align: "center"
 		});
+		
+		
 		
 		numb.setOrigin(0.5);
 		particle.display();
@@ -99,7 +103,7 @@ class Score extends Phaser.Scene{
 	
 	dispose()
 	{
-		
+		this.scene.setVisible(false, 'Score');
 		if(this.hasParticle)
 		{
 			this.time2 += 0.01;

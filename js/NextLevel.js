@@ -29,16 +29,16 @@ class NextLevel extends Phaser.Scene{
 		//add button
 		this.addButton('main_menu1', 120, 460, 0.4, ()=>{
 			mainMenu.display();
+			playScreen.dispose();
+			particle.dispose();
 			nextLevel.dispose();
 		});
 		this.addButton('share2', 120 + 90, 460, 0.4, ()=>{
 			
 		});
 		this.addButton('next_level1', 120  + 180, 460, 0.4, ()=>{
-			this.scene.wake('MainMenu');
-			this.scene.setVisible(true, 'MainMenu');
-			this.scene.setVisible(false, 'Score');
-			this.scene.bringToTop('MainMenu');
+			playScreen.nextlevel();
+			nextLevel.dispose();
 		});
 	}
 	
