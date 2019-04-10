@@ -2,7 +2,7 @@ class Particle extends Phaser.Scene{
 	
 	constructor(){
         super({key: 'Particle', active: true});
-		particleArray = ['blue', 'green','yellow',  'pink','blueblur', 'pinkblur', 'greenblur', 'yellowblur'];
+		this.particleArray = ['blue', 'green','yellow',  'pink','blueblur', 'pinkblur', 'greenblur', 'yellowblur'];
     }
 	
 	preload(){	

@@ -1,7 +1,8 @@
 class NextLevel extends Phaser.Scene{
-	bestScore = 70;
+	
     constructor(){
         super({key: 'NextLevel', active: true});
+		this.bestScore = 0;
     }
 	
 	preload(){
