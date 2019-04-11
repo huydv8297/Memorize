@@ -282,12 +282,12 @@ class PlayScreen extends Phaser.Scene{
                         delayInMilliseconds = 400;
                         setTimeout(() => {
 							console.log('timeout 3');
-                            this.input.disable(tile);
 							
                             tile.y -= 4;
 
                             if(text_tile == this.current_number_question)
                             {
+                                this.input.disable(tile);
                                 tile_base.setTexture('blue-tile-base');
                                 tile.setTexture('blue-tile-cover');
                                 count_right_answer++;
