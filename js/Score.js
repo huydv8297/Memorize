@@ -96,14 +96,16 @@ class Score extends Phaser.Scene{
 	
 	_display()
 	{
-		//this.scene.wake('Score');
+		this.scene.wake('Score');
 		this.scene.setVisible(true, 'Score');
 		this.scene.bringToTop('Score');
 	}
 	
 	dispose()
 	{
+		
 		this.scene.setVisible(false, 'Score');
+		this.scene.sleep('Score');
 		if(this.hasParticle)
 		{
 			this.time2 += 0.01;

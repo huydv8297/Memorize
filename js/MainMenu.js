@@ -69,10 +69,10 @@ class MainMenu extends Phaser.Scene{
 		});
 		
 		
-		this.scene.setVisible(false, 'Score');
-		this.scene.setVisible(false, 'PlayScreen');
-		this.scene.setVisible(false, 'Particle');
-		this.scene.setVisible(false, 'NextLevel');
+		score.dispose();
+		playScreen.dispose();
+		particle.dispose();
+		nextLevel.dispose();
 
 	}
 	
@@ -86,7 +86,7 @@ class MainMenu extends Phaser.Scene{
 	dispose()
 	{
 		this.scene.setVisible(false, 'MainMenu');
-		//this.scene.sleep('MainMenu');
+		this.scene.sleep('MainMenu');
 	}
 	
 	update ()

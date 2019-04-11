@@ -51,9 +51,7 @@ class PlayScreen extends Phaser.Scene{
 		
 		
     }
-	
-	
-	
+
 	initalize(){
 		this.current_level = 1;
         this.current_total_row_tiles = 2;
@@ -121,7 +119,7 @@ class PlayScreen extends Phaser.Scene{
         );
 
         header.create(372, 60, 'base-bg-btn').setScale(0.395).refreshBody();
-        header.create(372, 55, 'shad ow-bg-btn').setScale(0.39).refreshBody();
+        header.create(372, 55, 'shadow-bg-btn').setScale(0.39).refreshBody();
 		var soundButton;
 		if(isMute)
 		{
@@ -262,7 +260,7 @@ class PlayScreen extends Phaser.Scene{
                 text_answer.setVisible(false);
 
                 let delayInMilliseconds = 500;
-
+				tile.disableInteractive();
                 setTimeout(() => {
                     delayInMilliseconds = 3000;
 
@@ -271,21 +269,22 @@ class PlayScreen extends Phaser.Scene{
                     tile.setTexture('blue-tile-cover');
 
                     text_answer.setVisible(true);
+					console.log('timeout 1');
                     setTimeout(() => {
+						console.log('timeout 2');
                         tile.y -= 4;
                         tile_base.setTexture('tile-base');
                         tile.setTexture('tile-cover');
                         text_answer.setVisible(false);
-                    }, delayInMilliseconds);
-
-                    tile.setInteractive();
-                    tile.on('pointerdown', () => {
+						tile.setInteractive();
+						tile.on('pointerdown', () => {
                         tile.y += 4;
                         
                         delayInMilliseconds = 400;
                         setTimeout(() => {
+							console.log('timeout 3');
                             this.input.disable(tile);
-
+							
                             tile.y -= 4;
 
                             if(text_tile == this.current_number_question)
@@ -327,7 +326,14 @@ class PlayScreen extends Phaser.Scene{
                             text_answer.setVisible(true);
                         }, delayInMilliseconds);
                     });
+					
                 }, delayInMilliseconds);
+                    }, delayInMilliseconds);
+					console.log('out timeout 2');
+					
+					
+                    
+                    
                 
                 //tiles.push(tile);
             }

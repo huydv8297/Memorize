@@ -47,9 +47,6 @@ class NextLevel extends Phaser.Scene{
 	{
 		this._display();
 		//this.add.image(235, 384,'background1').setScale(0.4);
-		
-		
-
 	}
 	
 	addButton(key, positionX, positionY, scale, callback)
@@ -70,6 +67,6 @@ class NextLevel extends Phaser.Scene{
 	dispose()
 	{
 		this.scene.setVisible(false, 'NextLevel');
-		//this.scene.sleep('NextLevel');
+		this.scene.sleep('NextLevel');
 	}
 }
