@@ -166,7 +166,6 @@ class PlayScreen extends Phaser.Scene{
 	dispose()
 	{
 		this.isPlay = false;
-		console.log(this.isPlay);
 		this.scene.setVisible(false, 'PlayScreen');
 		this.scene.sleep('PlayScreen');
 	}
@@ -283,7 +282,7 @@ class PlayScreen extends Phaser.Scene{
                         delayInMilliseconds = 400;
                         setTimeout(() => {
 							console.log('timeout 3');
-                            //this.input.disable(tile);
+                            this.input.disable(tile);
 							
                             tile.y -= 4;
 
@@ -338,10 +337,6 @@ class PlayScreen extends Phaser.Scene{
                     }, delayInMilliseconds);
 					console.log('out timeout 2');
 					
-					
-                    
-                    
-                
                 //tiles.push(tile);
             }
         }
@@ -363,12 +358,16 @@ class PlayScreen extends Phaser.Scene{
 			this.time_left -= delta/1000;
 			this.time_left_ui.scaleX = 0.395 * this.time_left/this.time_left_max;
 		}else{
-			this.sound.play('gameover');
+			
 			this.isDie = true;
 		}
 		
 		if(this.isDie)
+		{
+			console.log('this.isDie '+this.isDie);
 			this.die();
+		}
+			
 		
 		
     }
@@ -381,6 +380,7 @@ class PlayScreen extends Phaser.Scene{
 		this.hearts[this.total_hearts].setVisible(false);
 		if(this.total_hearts == 0)
 		{
+			this.sound.play('gameover');
 			score.display(this.current_level - 1);
 		}
 		else{

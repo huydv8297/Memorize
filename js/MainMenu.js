@@ -35,10 +35,13 @@ class MainMenu extends Phaser.Scene{
 		playButton.setInteractive();
 		
 		playButton.on('pointerdown', ()=> {
+			console.log('play');
 			this.sound.play('button_click');
+			mainMenu.dispose();
 			playScreen.initalize();
 			playScreen.display();
-			mainMenu.dispose();
+			
+
 		});
 		
 		
