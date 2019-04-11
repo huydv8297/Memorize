@@ -47,7 +47,7 @@ class PlayScreen extends Phaser.Scene{
 		this.load.audio('button_click', 'assets/sounds/ButtonClick.wav');
 		this.load.audio('wrong_click', 'assets/audios/False/WrongClick.wav');
 		this.load.audio('true_click', 'assets/audios/Right/TrueClick.mp3');
-		this.load.audio('gameover', 'assets/audios/GameOver.mp3');
+		
 		
 		
     }
@@ -380,7 +380,6 @@ class PlayScreen extends Phaser.Scene{
 		this.hearts[this.total_hearts].setVisible(false);
 		if(this.total_hearts == 0)
 		{
-			this.sound.play('gameover');
 			score.display(this.current_level - 1);
 		}
 		else{

@@ -22,6 +22,8 @@ class Score extends Phaser.Scene{
 		this.load.image('replay', 'assets/sprites/Level_complete/Replay.png');
 		this.load.image('shadow', 'assets/sprites/Level_complete/Shadow.png');
 		this.load.image('share1', 'assets/sprites/Level_complete/Share.png');
+		
+		this.load.audio('gameover', 'assets/audios/GameOver.mp3');
    }
 	
 	create ()
@@ -75,6 +77,7 @@ class Score extends Phaser.Scene{
 	{
 		this._display();
 		//this.add.image(235, 384,'background1').setScale(0.4);
+		this.sound.play('gameover');
 		var title = 'New Best!!!';
 		if(value <= this.bestScore)
 		{
