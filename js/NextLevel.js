@@ -15,8 +15,28 @@ class NextLevel extends Phaser.Scene{
 		this.load.image('shadow1', 'assets/sprites/Level_complete/Shadow.png');
 		this.load.image('share2', 'assets/sprites/Level_complete/Share.png');
    }
+   
 	
 	create ()
+	{
+		
+	}
+	
+	display()
+	{
+		this._display();
+		//this.add.image(235, 384,'background1').setScale(0.4);
+	}
+	
+	addButton(key, positionX, positionY, scale, callback)
+	{
+		this.add.image(positionX, positionY + 10, 'shadow1').setScale(scale);
+		var button = this.add.image(positionX, positionY, key).setScale(scale);
+		button.setInteractive();
+		button.on('pointerdown', callback);
+	}
+	
+	_display()
 	{
 		this.add.nineslice(60, 120, 300/0.4, 420/0.4, 'popup1', [260, 50, 50, 50]).setScale(0.4);
 		
@@ -41,24 +61,6 @@ class NextLevel extends Phaser.Scene{
 			playScreen.nextlevel();
 			nextLevel.dispose();
 		});
-	}
-	
-	display()
-	{
-		this._display();
-		//this.add.image(235, 384,'background1').setScale(0.4);
-	}
-	
-	addButton(key, positionX, positionY, scale, callback)
-	{
-		this.add.image(positionX, positionY + 10, 'shadow1').setScale(scale);
-		var button = this.add.image(positionX, positionY, key).setScale(scale);
-		button.setInteractive();
-		button.on('pointerdown', callback);
-	}
-	
-	_display()
-	{
 		this.scene.wake('NextLevel');
 		this.scene.setVisible(true, 'NextLevel');
 		this.scene.bringToTop('NextLevel');
