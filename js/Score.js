@@ -7,6 +7,10 @@ class Score extends Phaser.Scene{
 			this.sprites = [];
 			this.hasParticle = true;
 			this.time2 = 0;
+			this.titleText;
+			this.icon;
+			this.scoreValue = 0;
+			this.bestValue;
     }
 	
 	preload(){
@@ -22,36 +26,14 @@ class Score extends Phaser.Scene{
 	
 	create ()
 	{
-		
-	}
-	
-	display(value)
-	{
-		this._display();
-		//this.add.image(235, 384,'background1').setScale(0.4);
-		
-		//particles
-		
 		this.add.nineslice(60, 120, 300/0.4, 420/0.4, 'popup', [260, 50, 50, 50]).setScale(0.4);
 		
 		var title = 'New Best!!!';
-		var icon = this.add.image(210, 320,'icon').setScale(0.4);
+		this.icon = this.add.image(210, 320,'icon').setScale(0.4);
 		
-		if(value <= this.bestScore)
-		{
-			title = 'Your Score';
-			icon.setVisible(false);
-			
-			this.add.text(215,390, 'Best ' + this.bestScore, {
-				font: "25px Arial",
-				fill: "#000000",
-				align: "center"
-			}).setOrigin(0.5);
-		}else{
-			this.bestScore = value;
-		}
 		
-		this.add.text(100, 150, title, {
+		
+		this.titleText = this.add.text(100, 150, title, {
 			font: "45px Arial",
 			fill: "#ffffff",
 			align: "center"
@@ -74,15 +56,40 @@ class Score extends Phaser.Scene{
 			particle.dispose();
 		});
 		
-		var numb = this.add.text(210, 320, value, {
+		this.scoreValue = this.add.text(210, 320, 0, {
 			font: "80px Arial",
 			fill: "#FF8800",
 			align: "center"
 		});
 		
+		this.bestValue = this.add.text(215,390, 'Best ' + this.bestScore, {
+            font: "25px Arial",
+            fill: "#000000",
+            align: "center"
+        }).setOrigin(0.5);
 		
-		
-		numb.setOrigin(0.5);
+		this.scoreValue.setOrigin(0.5);
+	}
+	
+	display(value)
+	{
+		this._display();
+		//this.add.image(235, 384,'background1').setScale(0.4);
+		var title = 'New Best!!!';
+		if(value <= this.bestScore)
+		{
+			title = 'Your Score';
+			this.icon.setVisible(false);
+			this.bestValue.setText('Best ' + this.bestScore);
+		}else{
+			this.icon.setVisible(true);
+			this.bestScore = value;
+			this.bestValue.setText('');
+		}
+		this.titleText.setText(title);
+		//particles
+		this.scoreValue.setText(value);
+
 		particle.display();
 	}
 	
