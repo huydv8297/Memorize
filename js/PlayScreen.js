@@ -283,7 +283,7 @@ class PlayScreen extends Phaser.Scene{
                         delayInMilliseconds = 400;
                         setTimeout(() => {
 							console.log('timeout 3');
-                            this.input.disable(tile);
+                            //this.input.disable(tile);
 							
                             tile.y -= 4;
 
@@ -308,12 +308,20 @@ class PlayScreen extends Phaser.Scene{
                                     this.current_number_question++;
                                     question_text.setText("Where is    " + this.current_number_question + "    ?");
                                 }
+                                text_answer.setVisible(true);
                             }
                             else
                             {
 								this.sound.play('wrong_click');
                                 tile_base.setTexture('red-tile-base');
                                 tile.setTexture('red-tile-cover');
+                                text_answer.setVisible(true);
+
+                                setTimeout(() => {
+                                    tile_base.setTexture('tile-base');
+                                    tile.setTexture('tile-cover');
+                                    text_answer.setVisible(false);
+                                }, 400);
 
                                 this.total_hearts--;
                                 this.hearts[this.total_hearts].setVisible(false);
@@ -322,8 +330,7 @@ class PlayScreen extends Phaser.Scene{
                                     score.display(this.current_level - 1);                                
                                 }
                             }
-
-                            text_answer.setVisible(true);
+                            
                         }, delayInMilliseconds);
                     });
 					
