@@ -3,6 +3,7 @@ class NextLevel extends Phaser.Scene{
     constructor(){
         super({key: 'NextLevel', active: true});
 		this.bestScore = 0;
+		this.isInit = false;
     }
 	
 	preload(){
@@ -19,6 +20,10 @@ class NextLevel extends Phaser.Scene{
 	
 	create ()
 	{
+		
+	}
+	
+	initialize(){
 		this.add.nineslice(60, 120, 300/0.4, 420/0.4, 'popup1', [260, 50, 50, 50]).setScale(0.4);
 		
 		var icon = this.add.image(210, 320,'medal').setScale(0.4);
@@ -42,10 +47,14 @@ class NextLevel extends Phaser.Scene{
 			playScreen.nextlevel();
 			nextLevel.dispose();
 		});
+		
+		this.isInit = true;
 	}
 	
 	display()
 	{
+		if(!this.isInit)
+			this.initialize();
 		this._display();
 		//this.add.image(235, 384,'background1').setScale(0.4);
 	}

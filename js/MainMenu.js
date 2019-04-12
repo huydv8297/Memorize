@@ -15,7 +15,6 @@ class MainMenu extends Phaser.Scene{
 		this.load.image('more_game', 'assets/sprites/Start/more_game.png');
 		this.load.image('leader_broad', 'assets/sprites/Start/leader_broad.png');
 		this.load.image('white', 'assets/sprites/Start/White 1.png');
-		
 		this.load.audio('button_click', 'assets/sounds/ButtonClick.wav');
 
     }
@@ -36,26 +35,20 @@ class MainMenu extends Phaser.Scene{
 		
 		playButton.on('pointerdown', ()=> {
 			console.log('play');
-			this.sound.play('button_click');
 			mainMenu.dispose();
-			playScreen.initalize();
+			playScreen.initialize();
 			playScreen.display();
+			this.sound.play('button_click');
 			
 
 		});
 		
 		
-		this.add.image(85, 635,'white').setScale(0.4);
-		this.add.image(85, 630,'share').setScale(0.39);
-		
 		this.add.image(85 * 2, 635,'white').setScale(0.4);
-		this.add.image(85 * 2, 630,'more_game').setScale(0.39);
-		
+		this.add.image(85 * 2, 630,'share').setScale(0.39);
+				
 		this.add.image(85 * 3, 635,'white').setScale(0.4);
-		this.add.image(85 * 3, 630,'leader_broad').setScale(0.39);
-		
-		this.add.image(85 * 4, 635,'white').setScale(0.4);
-		var soundButton = this.add.image(85 * 4, 630,'sound_on').setScale(0.4);
+		var soundButton = this.add.image(85 * 3, 630,'sound_on').setScale(0.4);
 		soundButton.setInteractive();
 		soundButton.on('pointerdown', ()=> {
 			isMute = !isMute;
@@ -96,5 +89,6 @@ class MainMenu extends Phaser.Scene{
 	{
 		
 	}
+	
 	
 }

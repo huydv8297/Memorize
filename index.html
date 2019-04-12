@@ -2,6 +2,7 @@
 <html lang="en"> 
 <head> 
     <meta charset="UTF-8" />
+	
     <title>Numerize</title>
     <script src="node_modules/phaser/dist/phaser.js"></script>
 	<script type="text/javascript" src="node_modules/phaser3-nineslice/dist/nineslice.js"></script>
@@ -21,6 +22,8 @@
             font-weight:400;
             font-weight:normal;
         }
+		
+		
     </style>
     <div style="font-family:SourceSansPro-Regular; position:absolute; left:-1000px; visibility:hidden;">.</div>
 </head>
@@ -29,34 +32,37 @@
 	
 <script type="text/javascript">
 
-var score = new Score();
-var particle = new Particle();
-var nextLevel = new NextLevel();
-var playScreen = new PlayScreen();
-var mainMenu = new MainMenu();
-var isMute = false;
+	var score = new Score();
+	var particle = new Particle();
+	var nextLevel = new NextLevel();
+	var playScreen = new PlayScreen();
+	var mainMenu = new MainMenu();
+	var isMute = false;	
+	var config = {
+		scale: {
+			parent: 'memorize',
+			mode: Phaser.Scale.FIT,
+			autoCenter: Phaser.Scale.CENTER_BOTH,
+			width: 432,
+			height: 768
+		},
+		type: Phaser.AUTO,
+		physics: {
+			default: 'arcade',
+			arcade: {
+				gravity: { y: 300 },
+				debug: false
+			}
+		},
+		plugins: {
+			global: [ NineSlice.Plugin.DefaultCfg ],
+		},
+		scene: [mainMenu, nextLevel, particle, score, playScreen]
 
-var config = {
-    type: Phaser.AUTO,
-    width: 432,
-    height: 768,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 300 },
-            debug: false
-        }
-    },
-	plugins: {
-		global: [ NineSlice.Plugin.DefaultCfg ],
-	},
-    scene: [mainMenu, nextLevel, particle, score, playScreen]
+	};
 
-};
-
-var game = new Phaser.Game(config);
-
-
+	var game = new Phaser.Game(config);
+	
 </script>
 
 </body>

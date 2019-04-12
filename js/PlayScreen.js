@@ -52,7 +52,8 @@ class PlayScreen extends Phaser.Scene{
 		
     }
 
-	initalize(){
+	initialize(){
+		this.level_group = this.add.group();
 		this.current_level = 1;
         this.current_total_row_tiles = 2;
         this.current_total_col_tiles = 2;
@@ -71,18 +72,18 @@ class PlayScreen extends Phaser.Scene{
         this.timedEvent;
 		this.create_ui_header();
         this.create_board_game();
-		console.log('initalize');
+		console.log('initialize');
 	}
 	
 	replay()
 	{
-		this.initalize();
+		this.initialize();
 		this.display();
 	}
 
     create ()
     {
-        this.level_group = this.add.group();
+		console.log('PlayScene create');
     }
 
     create_ui_header()
@@ -153,10 +154,8 @@ class PlayScreen extends Phaser.Scene{
 	
 	display()
 	{
-		
 		this.scene.wake('PlayScreen');
 		this.scene.setVisible(true, 'PlayScreen');
-		this.scene.switch('PlaySceen');
 		this.scene.bringToTop('PlayScreen');
 		var timedEvent = this.time.delayedCall(4000, ()=>{
 			this.isPlay = true;
@@ -322,12 +321,7 @@ class PlayScreen extends Phaser.Scene{
                                     text_answer.setVisible(false);
                                 }, 400);
 
-                                this.total_hearts--;
-                                this.hearts[this.total_hearts].setVisible(false);
-                                if(this.total_hearts == 0)
-                                {
-                                    score.display(this.current_level - 1);                                
-                                }
+                                this.die();
                             }
                             
                         }, delayInMilliseconds);
@@ -364,8 +358,8 @@ class PlayScreen extends Phaser.Scene{
 		
 		if(this.isDie)
 		{
-			console.log('this.isDie '+this.isDie);
-			this.die();
+			if(this.total_hearts > 0)
+				this.die();
 		}
 			
 		
@@ -374,8 +368,6 @@ class PlayScreen extends Phaser.Scene{
 	
 	die()
 	{
-		if(this.total_hearts <= 0)
-			return;
 		this.total_hearts--;
 		this.hearts[this.total_hearts].setVisible(false);
 		if(this.total_hearts == 0)
