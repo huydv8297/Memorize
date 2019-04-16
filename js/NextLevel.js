@@ -15,6 +15,8 @@ class NextLevel extends Phaser.Scene{
 		this.load.image('replay1', 'assets/sprites/Level_complete/Replay.png');
 		this.load.image('shadow1', 'assets/sprites/Level_complete/Shadow.png');
 		this.load.image('share2', 'assets/sprites/Level_complete/Share.png');
+		this.load.image('bg_board2', 'assets/sprites/bg-board.png');
+		this.load.audio('win', 'assets/audios/sfx_win_1.mp3');
    }
    
 	
@@ -24,26 +26,29 @@ class NextLevel extends Phaser.Scene{
 	}
 	
 	initialize(){
-		this.add.nineslice(60, 120, 300/0.4, 420/0.4, 'popup1', [260, 50, 50, 50]).setScale(0.4);
+		this.add.nineslice(0, 0, 800, 800, 'bg_board2', [6, 6, 6, 6]);
+		this.add.nineslice(60, 150, 300/0.4, 370/0.4, 'popup1', [260, 50, 50, 50]).setScale(0.4);
 		
 		var icon = this.add.image(210, 320,'medal').setScale(0.4);
-		this.add.text(100, 150, 'Level Complete', {
+		this.add.text(100, 180, 'Level Complete', {
 			font: "30px Arial",
 			fill: "#ffffff",
 			align: "center"
 		});
 
 		//add button
-		this.addButton('main_menu1', 120, 460, 0.4, ()=>{
+		this.addButton('main_menu1', 120 + 50, 440, 0.4, ()=>{
 			mainMenu.display();
 			playScreen.dispose();
 			particle.dispose();
 			nextLevel.dispose();
 		});
-		this.addButton('share2', 120 + 90, 460, 0.4, ()=>{
+		/*
+		this.addButton('share2', 120 + 90, 440, 0.4, ()=>{
 			
 		});
-		this.addButton('next_level1', 120  + 180, 460, 0.4, ()=>{
+		*/
+		this.addButton('next_level1', 120  + 140, 440, 0.4, ()=>{
 			playScreen.nextlevel();
 			nextLevel.dispose();
 		});
@@ -53,6 +58,7 @@ class NextLevel extends Phaser.Scene{
 	
 	display()
 	{
+		this.sound.play('win');
 		if(!this.isInit)
 			this.initialize();
 		this._display();
@@ -64,7 +70,14 @@ class NextLevel extends Phaser.Scene{
 		this.add.image(positionX, positionY + 10, 'shadow1').setScale(scale);
 		var button = this.add.image(positionX, positionY, key).setScale(scale);
 		button.setInteractive();
-		button.on('pointerdown', callback);
+		button.on('pointerdown', ()=>{
+			button.y += 4;
+			setTimeout(() => {
+				button.y -= 4;
+				this.sound.play('button_click');
+				callback();
+			}, 400);
+		});
 	}
 	
 	_display()

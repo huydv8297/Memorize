@@ -11,6 +11,7 @@ class Score extends Phaser.Scene{
 			this.icon;
 			this.scoreValue = 0;
 			this.bestValue;
+			
     }
 	
 	preload(){
@@ -22,61 +23,94 @@ class Score extends Phaser.Scene{
 		this.load.image('replay', 'assets/sprites/Level_complete/Replay.png');
 		this.load.image('shadow', 'assets/sprites/Level_complete/Shadow.png');
 		this.load.image('share1', 'assets/sprites/Level_complete/Share.png');
-		
+		this.load.image('bg_board1', 'assets/sprites/bg-board.png');
 		this.load.audio('gameover', 'assets/audios/GameOver.mp3');
+		this.load.audio('best', 'assets/audios/sfx_best_1.mp3');
+		this.load.audio('over', 'assets/audios/sfx_over_1.mp3');
+		this.container = this.add.container();
+		
    }
 	
 	create ()
 	{
-		this.add.nineslice(60, 120, 300/0.4, 420/0.4, 'popup', [260, 50, 50, 50]).setScale(0.4);
+		
+		
+			
+		
+		this.add.nineslice(0, 0, 800, 800, 'bg_board1', [6, 6, 6, 6]);
+		let popup = this.add.nineslice(60, 150, 300/0.4, 420/0.4, 'popup', [260, 50, 50, 50]).setScale(0.4);
+		
+		this.container.add(popup);
 		
 		var title = 'New Best!!!';
-		this.icon = this.add.image(210, 320,'icon').setScale(0.4);
+		this.icon = this.add.image(210, 350,'icon').setScale(0.4);
 		
+		this.container.add(this.icon);
 		
-		
-		this.titleText = this.add.text(100, 150, title, {
+		this.titleText = this.add.text(100, 180, title, {
 			font: "45px Arial",
 			fill: "#ffffff",
 			align: "center"
 		});
-
+		
+		this.container.add(this.titleText);
+		
 		//add button
-		this.addButton('replay', 120, 460, 0.4, ()=>{
+
+		this.addButton('replay', 120 + 40, 490, 0.4, ()=>{
 			score.dispose();
 			playScreen.replay();
 			particle.dispose();
 		});
+		
+		/*
 		this.addButton('share1', 120 + 90, 460, 0.4, ()=>{
-			
+			console.log('share1');
 		});
-		this.addButton('main_menu', 120  + 180, 460, 0.4, ()=>{
-
+		*/
+		this.addButton('main_menu', 120  + 130, 490, 0.4, ()=>{
 			mainMenu.display();
 			playScreen.dispose();
 			score.dispose();
 			particle.dispose();
 		});
 		
-		this.scoreValue = this.add.text(210, 320, 0, {
+		
+		this.scoreValue = this.add.text(210, 350, 0, {
 			font: "80px Arial",
 			fill: "#FF8800",
 			align: "center"
 		});
+		this.container.add(this.scoreValue);
 		
-		this.bestValue = this.add.text(215,390, 'Best ' + this.bestScore, {
+		this.bestValue = this.add.text(215,420, 'Best ' + this.bestScore, {
             font: "25px Arial",
             fill: "#000000",
             align: "center"
         }).setOrigin(0.5);
-		
+		this.container.add(this.bestValue);
 		this.scoreValue.setOrigin(0.5);
 	}
 	
+
+	
 	display(value)
 	{
+		this.container.setDepth(1);
+		this.container.setY(-400);
+		let temp = 0;
+		var counter = 0;
+		var containerTemp = this.container;
+		var i = setInterval(function(){
+			counter++;
+			containerTemp.setY(-400 + counter * 1);
+			if(counter === 480) {
+				clearInterval(i);
+			}
+		}, 5);
+		console.log('display score');
 		this._display();
-		//this.add.image(235, 384,'background1').setScale(0.4);
+		
 		this.sound.play('gameover');
 		var title = 'New Best!!!';
 		if(value <= this.bestScore)
@@ -84,7 +118,9 @@ class Score extends Phaser.Scene{
 			title = 'Your Score';
 			this.icon.setVisible(false);
 			this.bestValue.setText('Best ' + this.bestScore);
+			this.sound.play('best');
 		}else{
+			this.sound.play('over');
 			this.icon.setVisible(true);
 			this.bestScore = value;
 			this.bestValue.setText('');
@@ -98,10 +134,19 @@ class Score extends Phaser.Scene{
 	
 	addButton(key, positionX, positionY, scale, callback)
 	{
-		this.add.image(positionX, positionY + 10, 'shadow').setScale(scale);
+		var shadow = this.add.image(positionX, positionY + 10, 'shadow').setScale(scale);
 		var button = this.add.image(positionX, positionY, key).setScale(scale);
+		this.container.add(shadow);
+		this.container.add(button);
 		button.setInteractive();
-		button.on('pointerdown', callback);
+		button.on('pointerdown', ()=>{
+			button.y += 4;
+			setTimeout(() => {
+				button.y -= 4;
+				this.sound.play('button_click');
+				callback();
+			}, 400);
+		});
 	}
 	
 	_display()
@@ -113,7 +158,6 @@ class Score extends Phaser.Scene{
 	
 	dispose()
 	{
-		
 		this.scene.setVisible(false, 'Score');
 		this.scene.sleep('Score');
 		if(this.hasParticle)
@@ -129,8 +173,6 @@ class Score extends Phaser.Scene{
 				{
 					sprite.y = 150;
 				}
-				
-				
 			}
 			
 			if(this.time2 >= 1)
@@ -142,9 +184,7 @@ class Score extends Phaser.Scene{
 					var sprite = this.sprites[i].s;
 					sprite.destroy();
 				}
-				
 			}
-
 		}
 		
 	}

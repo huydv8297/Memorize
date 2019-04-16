@@ -23,32 +23,44 @@ class MainMenu extends Phaser.Scene{
 	{
 		this.add.image(235, 384,'background2').setScale(0.4);
 		
-		this.add.nineslice(40, 100, 350/0.4, 420/0.4, 'logo', [650, 225, 100, 55]).setScale(0.4);
+		this.add.nineslice(40, 120, 350/0.4, 420/0.4, 'logo', [650, 225, 100, 55]).setScale(0.4);
 		//var logo = this.add.image(216, 300,'logo').setScale(0.4);
 		//logo.scaleY = 0.7;
 		
 		
-		this.add.image(216, 440,'base-bg-btn2').setScale(0.4);
-		var playButton = this.add.image(216, 430,'playbutton').setScale(0.4);
+		this.add.image(216, 460,'base-bg-btn2').setScale(0.4);
+		var playButton = this.add.image(216, 450,'playbutton').setScale(0.4);
 		
 		playButton.setInteractive();
 		
 		playButton.on('pointerdown', ()=> {
 			console.log('play');
-			mainMenu.dispose();
-			playScreen.initialize();
-			playScreen.display();
-			this.sound.play('button_click');
-			
-
+			playButton.y += 4;
+			setTimeout(() => {
+                playButton.y -= 4;
+				playScreen.initialize();
+				playScreen.display();
+				this.sound.play('button_click');
+			}, 400);
 		});
 		
 		
+		
+		/*
 		this.add.image(85 * 2, 635,'white').setScale(0.4);
-		this.add.image(85 * 2, 630,'share').setScale(0.39);
-				
-		this.add.image(85 * 3, 635,'white').setScale(0.4);
-		var soundButton = this.add.image(85 * 3, 630,'sound_on').setScale(0.4);
+		var shareButton = this.add.image(85 * 2, 630,'share').setScale(0.39);
+		shareButton.setInteractive();
+		shareButton.on('pointerdown', ()=> {
+			shareButton.y += 4;
+			setTimeout(() => {
+                shareButton.y -= 4;
+				this.sound.play('button_click');
+			}, 400);
+		});
+		*/
+		
+		this.add.image(80, 710,'white').setScale(0.4);
+		var soundButton = this.add.image(80, 705,'sound_on').setScale(0.4);
 		soundButton.setInteractive();
 		soundButton.on('pointerdown', ()=> {
 			isMute = !isMute;
@@ -62,8 +74,13 @@ class MainMenu extends Phaser.Scene{
 				this.sound.mute = false;
 				soundButton.setTexture('sound_on');
 			}
+			
+			soundButton.y += 4;
+			setTimeout(() => {
+                soundButton.y -= 4;
+				this.sound.play('button_click');
+			}, 400);
 		});
-		
 		
 		score.dispose();
 		playScreen.dispose();
@@ -89,6 +106,5 @@ class MainMenu extends Phaser.Scene{
 	{
 		
 	}
-	
-	
+
 }
