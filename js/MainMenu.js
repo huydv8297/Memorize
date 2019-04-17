@@ -27,7 +27,6 @@ class MainMenu extends Phaser.Scene{
 		//var logo = this.add.image(216, 300,'logo').setScale(0.4);
 		//logo.scaleY = 0.7;
 		
-		
 		this.add.image(216, 460,'base-bg-btn2').setScale(0.4);
 		var playButton = this.add.image(216, 450,'playbutton').setScale(0.4);
 		
@@ -40,10 +39,10 @@ class MainMenu extends Phaser.Scene{
                 playButton.y -= 4;
 				playScreen.initialize();
 				playScreen.display();
+				mainMenu.dispose();
 				this.sound.play('button_click');
 			}, 400);
 		});
-		
 		
 		
 		/*
@@ -100,11 +99,6 @@ class MainMenu extends Phaser.Scene{
 	{
 		this.scene.setVisible(false, 'MainMenu');
 		this.scene.sleep('MainMenu');
-	}
-	
-	update ()
-	{
-		
 	}
 
 }

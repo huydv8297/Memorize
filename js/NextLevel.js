@@ -4,6 +4,7 @@ class NextLevel extends Phaser.Scene{
         super({key: 'NextLevel', active: true});
 		this.bestScore = 0;
 		this.isInit = false;
+		this.container;
     }
 	
 	preload(){
@@ -17,6 +18,8 @@ class NextLevel extends Phaser.Scene{
 		this.load.image('share2', 'assets/sprites/Level_complete/Share.png');
 		this.load.image('bg_board2', 'assets/sprites/bg-board.png');
 		this.load.audio('win', 'assets/audios/sfx_win_1.mp3');
+		
+		this.container = this.add.container();
    }
    
 	
@@ -26,16 +29,21 @@ class NextLevel extends Phaser.Scene{
 	}
 	
 	initialize(){
-		this.add.nineslice(0, 0, 800, 800, 'bg_board2', [6, 6, 6, 6]);
-		this.add.nineslice(60, 150, 300/0.4, 370/0.4, 'popup1', [260, 50, 50, 50]).setScale(0.4);
 		
-		var icon = this.add.image(210, 320,'medal').setScale(0.4);
-		this.add.text(100, 180, 'Level Complete', {
+		this.add.nineslice(0, 0, 800, 800, 'bg_board2', [6, 6, 6, 6]);
+		
+		let popup = this.add.nineslice(60, 150, 300/0.4, 370/0.4, 'popup1', [260, 50, 50, 50]).setScale(0.4);
+		
+		let icon = this.add.image(210, 320,'medal').setScale(0.4);
+		let textComplete = this.add.text(100, 180, 'Level Complete', {
 			font: "30px Arial",
 			fill: "#ffffff",
 			align: "center"
 		});
-
+		
+		this.container.add(popup);
+		this.container.add(icon);
+		this.container.add(textComplete);
 		//add button
 		this.addButton('main_menu1', 120 + 50, 440, 0.4, ()=>{
 			mainMenu.display();
@@ -53,11 +61,14 @@ class NextLevel extends Phaser.Scene{
 			nextLevel.dispose();
 		});
 		
+		
+		
 		this.isInit = true;
 	}
 	
 	display()
 	{
+		
 		this.sound.play('win');
 		if(!this.isInit)
 			this.initialize();
@@ -67,8 +78,10 @@ class NextLevel extends Phaser.Scene{
 	
 	addButton(key, positionX, positionY, scale, callback)
 	{
-		this.add.image(positionX, positionY + 10, 'shadow1').setScale(scale);
+		var shadow = this.add.image(positionX, positionY + 10, 'shadow1').setScale(scale);
 		var button = this.add.image(positionX, positionY, key).setScale(scale);
+		this.container.add(shadow);
+		this.container.add(button);
 		button.setInteractive();
 		button.on('pointerdown', ()=>{
 			button.y += 4;
@@ -86,6 +99,19 @@ class NextLevel extends Phaser.Scene{
 		this.scene.wake('NextLevel');
 		this.scene.setVisible(true, 'NextLevel');
 		this.scene.bringToTop('NextLevel');
+		
+		this.container.setDepth(1);
+		this.container.setY(-400);
+		let temp = 0;
+		var counter = 0;
+		var containerTemp = this.container;
+		var i = setInterval(function(){
+			counter++;
+			containerTemp.setY(-400 + counter * 4);
+			if(counter === 120) {
+				clearInterval(i);
+			}
+		}, 1);
 	}
 	
 	dispose()

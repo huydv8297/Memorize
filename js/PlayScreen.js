@@ -13,7 +13,7 @@ class PlayScreen extends Phaser.Scene {
         this.hearts = [];
         this.total_hearts = 3;
 
-        this.time_left_max = 5.0;
+        this.time_left_max = 10.0;
         this.time_left = this.time_left_max;
         this.time_left_ui;
         this.isPlay = false;
@@ -67,7 +67,7 @@ class PlayScreen extends Phaser.Scene {
         this.total_hearts = 3;
         this.isPlay = false;
         this.isDie = false;
-        this.time_left_max = 5.0;
+        this.time_left_max = 10.0;
         this.time_left = this.time_left_max;
         this.time_left_ui;
         this.timedEvent;
@@ -155,7 +155,7 @@ class PlayScreen extends Phaser.Scene {
 
         let time_ui = header.create(30, 100, 'time-white').setScale(0.395).refreshBody();
         time_ui.setOrigin(0);
-        this.time_left_ui = header.create(30, 100, 'time-left').setScale(0.395).refreshBody();
+        this.time_left_ui = header.create(30, 101, 'time-left').setScale(0.395).refreshBody();
         this.time_left_ui.setOrigin(0);
 
     }
@@ -234,21 +234,28 @@ class PlayScreen extends Phaser.Scene {
 
         for (let col = 0; col < this.current_total_col_tiles; col++) {
             for (let row = 0; row < this.current_total_row_tiles; row++) {
-                let tile_base = this.add.sprite(start_x + 88 * col, start_y + 2 + 81 * row, 'tile-base').setScale(0);
-                let tile = this.add.sprite(start_x + 88 * col, start_y + 81 * row, 'tile-cover').setScale(0);
+                let tile_base = this.add.sprite(start_x + 88 * col, start_y + 2 + 81 * row, 'tile-base').setScale(0.55);
+                let tile = this.add.sprite(start_x + 88 * col, start_y + 81 * row, 'tile-cover').setScale(0.55);
+				//let buttonContainer = this.add.container(200, 200);
+				//buttonContainer.add(tile_base);
+				//buttonContainer.add(tile);
+				//buttonContainer.setDepth(1);
+				//buttonContainer.setPosition(tile_base.position);
 				
 				let temp = 0;
 				let counter = 0;
 				let i = setInterval(function(){
 					let scaleTemp = 0.55 * (counter/10);
+					
+					//buttonContainer.setScale(scaleTemp);
+					counter++;
 					tile_base.setScale(scaleTemp);
 					tile.setScale(scaleTemp);
-					counter++;
 					if(counter === 10) {
 						clearInterval(i);
 					}
 				}, 50);
-				
+				//this.level_group.add(buttonContainer);
                 this.level_group.add(tile_base);
                 this.level_group.add(tile);
 
@@ -269,7 +276,7 @@ class PlayScreen extends Phaser.Scene {
                         align: "center",
                     }
                 );
-
+				//buttonContainer.add(text_answer);
                 this.level_group.add(text_answer);
 
                 text_answer.setVisible(false);
@@ -292,7 +299,7 @@ class PlayScreen extends Phaser.Scene {
                         tile.setInteractive();
                         tile.on('pointerdown', () => {
                             tile.y += 4;
-
+							
                             delayInMilliseconds = 400;
                             setTimeout(() => {
                                 tile.y -= 4;
@@ -336,13 +343,13 @@ class PlayScreen extends Phaser.Scene {
 
                                     this.total_hearts--;
                                     //this.hearts[this.total_hearts].setVisible(false);
-                                    this.hearts[this.total_hearts].setTexture('white-heart');
+                                    if(this.total_hearts >= 0)
+										this.hearts[this.total_hearts].setTexture('white-heart');
                                     if (this.total_hearts == 0) {
 										let count = this.level_group.getLength();
 										this.cleanLevel(count - 1, ()=>{
 											score.display(this.current_level - 1);
 										});
-                                        
                                     }
                                 }
 
@@ -388,7 +395,9 @@ class PlayScreen extends Phaser.Scene {
 	
 	die()
 	{
+		
 		this.total_hearts--;
+		console.log(this.total_hearts);
 		this.hearts[this.total_hearts].setVisible(false);
 		if(this.total_hearts == 0)
 		{
@@ -405,48 +414,55 @@ class PlayScreen extends Phaser.Scene {
 	}
 	
 	nextlevel(){
-		this.current_level++;
+		if(this.current_total_numbers < 24)
+		{
+			this.current_total_numbers++;
+			this.current_level++;
+		}
+			
 		this.time_left = this.time_left_max;
 		
 		if(this.current_total_numbers >= this.current_total_row_tiles * this.current_total_col_tiles - 1)
 		{
 			if(this.current_total_col_tiles == this.current_total_row_tiles)
-				this.current_total_col_tiles++;
-			else
 				this.current_total_row_tiles++;
+			else
+				
+				this.current_total_col_tiles++;
 		}
+		
+
 		this.levelText.setText("Level " + this.current_level);
-		this.current_total_numbers++;
+		
 		this.level_group.clear(true, true);
         this.create_board_game();
         this.display();
     }
 	
 	cleanLevel(id, callback){
-		if(id < 2)
+		if(id < 0)
 		{	callback();
-			return;
+			return; 
 		}
 			
-		let array = this.level_group.getChildren();
+		let array = this.leve_group.getChildren();
+		let groupTemp = this.level_group;
 		let temp = 0;
 		var counter = 0;
 		var i = setInterval(function(){
+			array[id].setOrligin(0.5);
 			array[id].setScale(0.4 * (1 - counter/10));
-			array[id - 1].setScale(0.4 * (1 - counter/10));
-			//array[id - 2].setScale(0.4 * (1 - counter/10));
 			counter++;
 			if(counter === 10) {
+				array[id].removeInteractive();
 				array[id].setVisible(false);
-				array[id -1].setVisible(false);
-				//array[id -2].setVisible(false);
+				//groupTemp.remove(array[id], true, true);
 				clearInterval(i);
 			}
 		}, 10);
 		
-		
 		setTimeout(() =>{
-			this.cleanLevel(id - 2, callback);
-		}, 100);
+			this.cleanLevel(id - 1, callback);
+		}, 20);
 	}
 }

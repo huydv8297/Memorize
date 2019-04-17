@@ -33,10 +33,6 @@ class Score extends Phaser.Scene{
 	
 	create ()
 	{
-		
-		
-			
-		
 		this.add.nineslice(0, 0, 800, 800, 'bg_board1', [6, 6, 6, 6]);
 		let popup = this.add.nineslice(60, 150, 300/0.4, 420/0.4, 'popup', [260, 50, 50, 50]).setScale(0.4);
 		
@@ -103,11 +99,11 @@ class Score extends Phaser.Scene{
 		var containerTemp = this.container;
 		var i = setInterval(function(){
 			counter++;
-			containerTemp.setY(-400 + counter * 1);
-			if(counter === 480) {
+			containerTemp.setY(-400 + counter * 4);
+			if(counter === 120) {
 				clearInterval(i);
 			}
-		}, 5);
+		}, 1);
 		console.log('display score');
 		this._display();
 		
@@ -158,8 +154,24 @@ class Score extends Phaser.Scene{
 	
 	dispose()
 	{
-		this.scene.setVisible(false, 'Score');
+		console.log('dispose');
+		/*let temp = 0;
+		var counter = 0;
+		var containerTemp = this.container;
+		var sceneTemp = this.scene;
+		var i = setInterval(function(){
+			counter++;
+			containerTemp.setY(80 - counter * 4);
+			if(counter === 120) {
+				sceneTemp.setVisible(false, 'Score');
+				sceneTemp.sleep('Score');
+				clearInterval(i);
+			}
+		}, 1);
+		*/
 		this.scene.sleep('Score');
+		this.scene.setVisible(false, 'Score');
+		this.container.setY(-800);
 		if(this.hasParticle)
 		{
 			this.time2 += 0.01;
