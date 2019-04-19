@@ -1,6 +1,7 @@
 class MainMenu extends Phaser.Scene{
     constructor(){
         super({key: 'MainMenu', active: true});
+		this.soundButton;
     }
 	
     preload(){
@@ -58,25 +59,25 @@ class MainMenu extends Phaser.Scene{
 		});
 		*/
 		
-		this.add.image(80, 710,'white').setScale(0.4);
-		var soundButton = this.add.image(80, 705,'sound_on').setScale(0.4);
-		soundButton.setInteractive();
-		soundButton.on('pointerdown', ()=> {
+		this.add.image(70, 705,'white').setScale(0.39);
+		this.soundButton = this.add.image(70, 700,'sound_on').setScale(0.39);
+		this.soundButton.setInteractive();
+		this.soundButton.on('pointerdown', ()=> {
 			isMute = !isMute;
 			if(isMute)
 			{
 				this.sound.play('button_click');
 				this.sound.mute = true;
-				soundButton.setTexture('sound_off');
+				this.soundButton.setTexture('sound_off');
 			}else{
 				
 				this.sound.mute = false;
-				soundButton.setTexture('sound_on');
+				this.soundButton.setTexture('sound_on');
 			}
 			
-			soundButton.y += 4;
+			this.soundButton.y += 4;
 			setTimeout(() => {
-                soundButton.y -= 4;
+                this.soundButton.y -= 4;
 				this.sound.play('button_click');
 			}, 400);
 		});
@@ -90,6 +91,12 @@ class MainMenu extends Phaser.Scene{
 	
 	display()
 	{
+		if(isMute)
+		{
+			this.soundButton.setTexture('sound_off');
+		}else{
+			this.soundButton.setTexture('sound_on');
+		}
 		this.scene.wake('MainMenu');
 		this.scene.setVisible(true, 'MainMenu');
 		this.scene.bringToTop('MainMenu');

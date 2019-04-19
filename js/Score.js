@@ -54,9 +54,11 @@ class Score extends Phaser.Scene{
 		//add button
 
 		this.addButton('replay', 120 + 40, 490, 0.4, ()=>{
-			score.dispose();
-			playScreen.replay();
-			particle.dispose();
+			score.disable(()=>{
+				playScreen.replay();
+				particle.dispose();
+			});
+			
 		});
 		
 		/*
@@ -65,10 +67,11 @@ class Score extends Phaser.Scene{
 		});
 		*/
 		this.addButton('main_menu', 120  + 130, 490, 0.4, ()=>{
-			mainMenu.display();
-			playScreen.dispose();
-			score.dispose();
-			particle.dispose();
+			score.disable(()=>{
+				mainMenu.display();
+				playScreen.dispose();
+				particle.dispose();
+			});
 		});
 		
 		
@@ -99,11 +102,11 @@ class Score extends Phaser.Scene{
 		var containerTemp = this.container;
 		var i = setInterval(function(){
 			counter++;
-			containerTemp.setY(-400 + counter * 4);
-			if(counter === 120) {
+			containerTemp.setY(-400 + counter * 8);
+			if(counter === 60) {
 				clearInterval(i);
 			}
-		}, 1);
+		}, 0.1);
 		console.log('display score');
 		this._display();
 		
@@ -152,23 +155,30 @@ class Score extends Phaser.Scene{
 		this.scene.bringToTop('Score');
 	}
 	
+	disable(callback)
+	{
+		let temp = 0;
+		var counter = 0;
+		let instance = this;
+		var containerTemp = this.container;
+		var sceneTemp = this.scene;
+		
+		var i = setInterval(function(){
+			counter++;
+			containerTemp.setY(80 - counter * 8);
+			if(counter === 60) {
+				callback();
+				instance.dispose();
+				clearInterval(i);
+			}
+		}, 0.1);
+		
+	}
+	
 	dispose()
 	{
 		console.log('dispose');
-		/*let temp = 0;
-		var counter = 0;
-		var containerTemp = this.container;
-		var sceneTemp = this.scene;
-		var i = setInterval(function(){
-			counter++;
-			containerTemp.setY(80 - counter * 4);
-			if(counter === 120) {
-				sceneTemp.setVisible(false, 'Score');
-				sceneTemp.sleep('Score');
-				clearInterval(i);
-			}
-		}, 1);
-		*/
+		
 		this.scene.sleep('Score');
 		this.scene.setVisible(false, 'Score');
 		this.container.setY(-800);

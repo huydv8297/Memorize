@@ -46,10 +46,11 @@ class NextLevel extends Phaser.Scene{
 		this.container.add(textComplete);
 		//add button
 		this.addButton('main_menu1', 120 + 50, 440, 0.4, ()=>{
-			mainMenu.display();
-			playScreen.dispose();
-			particle.dispose();
-			nextLevel.dispose();
+			nextLevel.disable(()=>{
+				mainMenu.display();
+				playScreen.dispose();
+				particle.dispose();
+			});
 		});
 		/*
 		this.addButton('share2', 120 + 90, 440, 0.4, ()=>{
@@ -57,8 +58,9 @@ class NextLevel extends Phaser.Scene{
 		});
 		*/
 		this.addButton('next_level1', 120  + 140, 440, 0.4, ()=>{
-			playScreen.nextlevel();
-			nextLevel.dispose();
+			nextLevel.disable(()=>{
+				playScreen.nextlevel();
+			});
 		});
 		
 		
@@ -107,11 +109,29 @@ class NextLevel extends Phaser.Scene{
 		var containerTemp = this.container;
 		var i = setInterval(function(){
 			counter++;
-			containerTemp.setY(-400 + counter * 4);
-			if(counter === 120) {
+			containerTemp.setY(-400 + counter * 8);
+			if(counter === 60) {
 				clearInterval(i);
 			}
-		}, 1);
+		}, 0.1);
+	}
+	
+	disable(callback)
+	{
+		let temp = 0;
+		var counter = 0;
+		let instance = this;
+		var containerTemp = this.container;
+		var sceneTemp = this.scene;
+		var i = setInterval(function(){
+			counter++;
+			containerTemp.setY(80 - counter * 8);
+			if(counter === 60) {
+				callback();
+				instance.dispose();
+				clearInterval(i);
+			}
+		}, 0.1);
 	}
 	
 	dispose()

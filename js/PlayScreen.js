@@ -166,9 +166,9 @@ class PlayScreen extends Phaser.Scene {
         this.scene.setVisible(true, 'PlayScreen');
         this.scene.switch('PlaySceen');
         this.scene.bringToTop('PlayScreen');
-        var timedEvent = this.time.delayedCall(4000, () => {
-            this.isPlay = true;
-        }, [], this);
+        //var timedEvent = this.time.delayedCall(this.current_total_numbers * 200 + 1000, () => {
+        //    this.isPlay = true;
+       // }, [], this);
     }
 
     dispose() {
@@ -242,6 +242,9 @@ class PlayScreen extends Phaser.Scene {
 				//buttonContainer.setDepth(1);
 				//buttonContainer.setPosition(tile_base.position);
 				
+				//this.initTile(tile, tile_base, 0.55, 40);
+				
+				
 				let temp = 0;
 				let counter = 0;
 				let i = setInterval(function(){
@@ -255,6 +258,7 @@ class PlayScreen extends Phaser.Scene {
 						clearInterval(i);
 					}
 				}, 50);
+				
 				//this.level_group.add(buttonContainer);
                 this.level_group.add(tile_base);
                 this.level_group.add(tile);
@@ -284,8 +288,7 @@ class PlayScreen extends Phaser.Scene {
                 let delayInMilliseconds = 500;
                 tile.disableInteractive();
                 setTimeout(() => {
-                    delayInMilliseconds = 3000;
-
+                    delayInMilliseconds = this.current_total_numbers * 400 + 2000;
                     tile.y += 4;
                     tile_base.setTexture('blue-tile-base');
                     tile.setTexture('blue-tile-cover');
@@ -297,6 +300,7 @@ class PlayScreen extends Phaser.Scene {
                         tile.setTexture('tile-cover');
                         text_answer.setVisible(false);
                         tile.setInteractive();
+						this.isPlay = true;
                         tile.on('pointerdown', () => {
                             tile.y += 4;
 							
@@ -347,6 +351,7 @@ class PlayScreen extends Phaser.Scene {
 										this.hearts[this.total_hearts].setTexture('white-heart');
                                     if (this.total_hearts == 0) {
 										let count = this.level_group.getLength();
+										this.isPlay = false;
 										this.cleanLevel(count - 1, ()=>{
 											score.display(this.current_level - 1);
 										});
@@ -367,7 +372,7 @@ class PlayScreen extends Phaser.Scene {
             tile_base_question.setVisible(true);
             tile_question.setVisible(true);
             question_text.setVisible(true);
-        }, 4000);
+        }, this.current_total_numbers * 200 + 1000);
     }
 
     update (time, delta)
@@ -442,15 +447,16 @@ class PlayScreen extends Phaser.Scene {
 	cleanLevel(id, callback){
 		if(id < 0)
 		{	callback();
+			this.time_left_ui.scaleX = 0.395;
 			return; 
 		}
 			
-		let array = this.leve_group.getChildren();
+		let array = this.level_group.getChildren();
 		let groupTemp = this.level_group;
 		let temp = 0;
 		var counter = 0;
 		var i = setInterval(function(){
-			array[id].setOrligin(0.5);
+			array[id].setOrigin(0.5);
 			array[id].setScale(0.4 * (1 - counter/10));
 			counter++;
 			if(counter === 10) {
@@ -464,5 +470,23 @@ class PlayScreen extends Phaser.Scene {
 		setTimeout(() =>{
 			this.cleanLevel(id - 1, callback);
 		}, 20);
+	}
+	
+	
+	initTile(tile, tile_base, scale, timeout)
+	{
+		let scaleTemp = 0;
+		let counter = 0;
+		while(true){
+			counter++;
+			setTimeout(()=>{
+				scaleTemp = counter * (scale /10);
+				title.setScale(scaleTemp);
+				tile_base.setScale(scaleTemp);
+				if(counter === 10) {
+					return;
+				}
+			}, timeout);
+		}
 	}
 }
