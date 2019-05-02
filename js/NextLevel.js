@@ -30,16 +30,16 @@ class NextLevel extends Phaser.Scene{
 	
 	initialize(){
 		
-		this.add.nineslice(0, 0, 800, 800, 'bg_board2', [6, 6, 6, 6]);
+		//this.add.nineslice(0, 0, 800, 800, 'bg_board2', [6, 6, 6, 6]);
 		
 		let popup = this.add.nineslice(60, 150, 300/0.4, 370/0.4, 'popup1', [260, 50, 50, 50]).setScale(0.4);
 		
 		let icon = this.add.image(210, 320,'medal').setScale(0.4);
-		let textComplete = this.add.text(100, 180, 'Level Complete', {
-			font: "30px Arial",
+		let textComplete = this.add.text(216, 200, 'Level Complete', {
+			font: 70 /ratio + "px Arial",
 			fill: "#ffffff",
 			align: "center"
-		});
+		}).setOrigin(0.5);
 		
 		this.container.add(popup);
 		this.container.add(icon);
@@ -66,6 +66,7 @@ class NextLevel extends Phaser.Scene{
 		
 		
 		this.isInit = true;
+		this.container.setY(-400);
 	}
 	
 	display()
@@ -109,11 +110,11 @@ class NextLevel extends Phaser.Scene{
 		var containerTemp = this.container;
 		var i = setInterval(function(){
 			counter++;
-			containerTemp.setY(-400 + counter * 8);
-			if(counter === 60) {
+			containerTemp.setY(-400 + counter * 10);
+			if(counter === 48) {
 				clearInterval(i);
 			}
-		}, 0.1);
+		}, 1);
 	}
 	
 	disable(callback)

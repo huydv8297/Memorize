@@ -86,7 +86,7 @@ class PlayScreen extends Phaser.Scene {
     }
 
     create_ui_header() {
-        this.add.image(216, 384, 'background').setScale(0.5);
+        //this.add.image(216, 384, 'background').setScale(0.5);
 		
 		this.add.nineslice(20, 15, 400, 120, 'bg_board', [6, 6, 6, 6]);
 		
@@ -207,27 +207,36 @@ class PlayScreen extends Phaser.Scene {
 
         let index_tile = 0;
         let count_right_answer = 0;
-
-        let tile_base_question = this.add.sprite(268, 175, 'blue-tile-base').setScale(0.45);
-        let tile_question = this.add.sprite(268, 175, 'blue-tile-cover').setScale(0.45);
-
+		
+		let screenWidth = window.innerWidth;
+		console.log(screenWidth);
+        let tile_base_question = this.add.sprite(0 , 0, 'blue-tile-base').setScale(0.45);
+        let tile_question = this.add.sprite(0, 0, 'blue-tile-cover').setScale(0.45);
+		
         this.level_group.add(tile_base_question);
         this.level_group.add(tile_question);
 
         tile_base_question.setVisible(false);
         tile_question.setVisible(false);
-
+		
         let question_text = this.add.text(
-            90,
-            150,
-            "Where is    " + this.current_number_question + "    ?",
+            215,
+            170,
+            "Where is   " + this.current_number_question + "    ?",
             {
-                font: "33px Arial",
+                fontFamily: "Arial",
                 fill: "#fff",
                 align: "center",
             }
-        );
-
+        ).setFontSize(32).setOrigin(0.5);
+		console.log(question_text.displayWidth);
+		let containerButton = this.add.container();
+		containerButton.setDepth(-1);
+		containerButton.add(tile_base_question);
+		containerButton.add(tile_question);
+		containerButton.setPosition(225 + 50, 175);
+		containerButton.setPosition(225 + 50, 175);
+		
         this.level_group.add(question_text);
 
         question_text.setVisible(false);
@@ -323,7 +332,7 @@ class PlayScreen extends Phaser.Scene {
                                       //  nextLevel.display();
 										this.sound.play('over');
                                         this.current_number_question = 1;
-                                        question_text.setText("        Done !");
+                                        question_text.setText("       Done !");
                                         tile_base_question.setVisible(false);
                                         tile_question.setVisible(false);
                                     }

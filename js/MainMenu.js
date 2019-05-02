@@ -16,13 +16,16 @@ class MainMenu extends Phaser.Scene{
 		this.load.image('more_game', 'assets/sprites/Start/more_game.png');
 		this.load.image('leader_broad', 'assets/sprites/Start/leader_broad.png');
 		this.load.image('white', 'assets/sprites/Start/White 1.png');
+		this.load.image('exit', 'assets/sprites/Level_complete/exit.png');
 		this.load.audio('button_click', 'assets/sounds/ButtonClick.wav');
 
     }
 	
 	create ()
 	{
-		this.add.image(235, 384,'background2').setScale(0.4);
+		//this.cameras.main.setViewport(0,0,window.innerWidth, window.innerHeight);
+		let bg = this.add.image(235, 384,'background2').setScale(0.5);
+		bg.alpha = 0;
 		
 		this.add.nineslice(40, 120, 350/0.4, 420/0.4, 'logo', [650, 225, 100, 55]).setScale(0.4);
 		//var logo = this.add.image(216, 300,'logo').setScale(0.4);
@@ -59,8 +62,8 @@ class MainMenu extends Phaser.Scene{
 		});
 		*/
 		
-		this.add.image(70, 705,'white').setScale(0.39);
-		this.soundButton = this.add.image(70, 700,'sound_on').setScale(0.39);
+		this.add.image(170, 705,'white').setScale(0.39);
+		this.soundButton = this.add.image(170, 700,'sound_on').setScale(0.39);
 		this.soundButton.setInteractive();
 		this.soundButton.on('pointerdown', ()=> {
 			isMute = !isMute;
@@ -78,6 +81,18 @@ class MainMenu extends Phaser.Scene{
 			this.soundButton.y += 4;
 			setTimeout(() => {
                 this.soundButton.y -= 4;
+				this.sound.play('button_click');
+			}, 400);
+		});
+		
+		this.add.image(260, 705,'white').setScale(0.39);
+		this.exitButton = this.add.image(260, 700,'exit').setScale(0.39);
+		this.exitButton.setInteractive();
+		this.exitButton.on('pointerdown', ()=> {
+			this.exitButton.y += 4;
+			window.location.href = 'quit';
+			setTimeout(() => {
+                this.exitButton.y -= 4;
 				this.sound.play('button_click');
 			}, 400);
 		});

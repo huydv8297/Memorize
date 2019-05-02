@@ -33,7 +33,7 @@ class Score extends Phaser.Scene{
 	
 	create ()
 	{
-		this.add.nineslice(0, 0, 800, 800, 'bg_board1', [6, 6, 6, 6]);
+		//this.add.nineslice(0, 0, 800, 800, 'bg_board1', [6, 6, 6, 6]);
 		let popup = this.add.nineslice(60, 150, 300/0.4, 420/0.4, 'popup', [260, 50, 50, 50]).setScale(0.4);
 		
 		this.container.add(popup);
@@ -43,11 +43,11 @@ class Score extends Phaser.Scene{
 		
 		this.container.add(this.icon);
 		
-		this.titleText = this.add.text(100, 180, title, {
-			font: "45px Arial",
+		this.titleText = this.add.text(216, 200, title, {
+			font: 90 / ratio + "px Arial",
 			fill: "#ffffff",
 			align: "center"
-		});
+		}).setOrigin(0.5);
 		
 		this.container.add(this.titleText);
 		
@@ -76,14 +76,14 @@ class Score extends Phaser.Scene{
 		
 		
 		this.scoreValue = this.add.text(210, 350, 0, {
-			font: "80px Arial",
+			font: 160 /ratio + "px Arial",
 			fill: "#FF8800",
 			align: "center"
 		});
 		this.container.add(this.scoreValue);
 		
 		this.bestValue = this.add.text(215,420, 'Best ' + this.bestScore, {
-            font: "25px Arial",
+            font: 50 / ratio + "px Arial",
             fill: "#000000",
             align: "center"
         }).setOrigin(0.5);
@@ -102,11 +102,11 @@ class Score extends Phaser.Scene{
 		var containerTemp = this.container;
 		var i = setInterval(function(){
 			counter++;
-			containerTemp.setY(-400 + counter * 8);
-			if(counter === 60) {
+			containerTemp.setY(-400 + counter * 10);
+			if(counter === 48) {
 				clearInterval(i);
 			}
-		}, 0.1);
+		}, 1);
 		console.log('display score');
 		this._display();
 		
