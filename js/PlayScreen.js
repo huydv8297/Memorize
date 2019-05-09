@@ -338,7 +338,7 @@ class PlayScreen extends Phaser.Scene {
                                     }
                                     else {
                                         this.current_number_question++;
-                                        question_text.setText("Where is    " + this.current_number_question + "    ?");
+                                        question_text.setText("Where is      " + this.current_number_question + "    ?");
                                     }
                                     text_answer.setVisible(true);
                                 }

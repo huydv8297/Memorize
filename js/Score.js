@@ -11,6 +11,7 @@ class Score extends Phaser.Scene{
 			this.icon;
 			this.scoreValue = 0;
 			this.bestValue;
+			this.isDisplay = false;
 			
     }
 	
@@ -83,12 +84,29 @@ class Score extends Phaser.Scene{
 		this.container.add(this.scoreValue);
 		
 		this.bestValue = this.add.text(215,420, 'Best ' + this.bestScore, {
-            font: 50 / ratio + "px Arial",
+            font: 60 / ratio + "px Arial",
             fill: "#000000",
             align: "center"
         }).setOrigin(0.5);
 		this.container.add(this.bestValue);
 		this.scoreValue.setOrigin(0.5);
+	}
+	
+	update(time, delta){
+		if(this.isDisplay){
+			this.container.setY(this.container.y + delta);
+			if(this.container.y >= 80)
+				this.isDisplay = false;
+		}
+		
+		if(this.isDisable){
+			this.container.setY(this.container.y - delta);
+			if(this.container.y <= -480){
+				this.callback();
+				this.dispose();
+				this.isDisable = false;
+			}
+		}
 	}
 	
 
@@ -97,16 +115,7 @@ class Score extends Phaser.Scene{
 	{
 		this.container.setDepth(1);
 		this.container.setY(-400);
-		let temp = 0;
-		var counter = 0;
-		var containerTemp = this.container;
-		var i = setInterval(function(){
-			counter++;
-			containerTemp.setY(-400 + counter * 10);
-			if(counter === 48) {
-				clearInterval(i);
-			}
-		}, 1);
+		this.isDisplay = true;
 		console.log('display score');
 		this._display();
 		
@@ -157,22 +166,8 @@ class Score extends Phaser.Scene{
 	
 	disable(callback)
 	{
-		let temp = 0;
-		var counter = 0;
-		let instance = this;
-		var containerTemp = this.container;
-		var sceneTemp = this.scene;
-		
-		var i = setInterval(function(){
-			counter++;
-			containerTemp.setY(80 - counter * 8);
-			if(counter === 60) {
-				callback();
-				instance.dispose();
-				clearInterval(i);
-			}
-		}, 0.1);
-		
+		this.callback = callback;
+		this.isDisable = true;
 	}
 	
 	dispose()
